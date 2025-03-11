@@ -18,6 +18,9 @@ PluginEditor::PluginEditor (PluginProcessor& p)
         inspector->setVisible (true);
     };
 
+    addAndMakeVisible (buttonEnableArp);
+    buttonEnableArp.onClick = [this] { updateToggleState (&buttonEnableArp, "Enable Arp"); };
+
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
@@ -37,6 +40,8 @@ void PluginEditor::paint (juce::Graphics& g)
     g.setFont (16.0f);
     auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
     g.drawText (helloWorld, area.removeFromTop (150), juce::Justification::centred, false);
+
+    buttonEnableArp.setBounds (20, 40, getWidth() - 30, 20);
 }
 
 void PluginEditor::resized()
