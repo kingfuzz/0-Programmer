@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.comp": "yaml",
+        "*.graph": "yaml",
+        "*.mm": "cpp"
+    }
+}

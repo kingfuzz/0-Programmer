@@ -1,16 +1,17 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "ThreadSafeMessageQueue.h"
 
 #if (MSVC)
 #include "ipps.h"
 #endif
 
-class PluginProcessor : public juce::AudioProcessor
+class ProgrammerProcessor : public juce::AudioProcessor
 {
 public:
-    PluginProcessor();
-    ~PluginProcessor() override;
+    ProgrammerProcessor();
+    ~ProgrammerProcessor() override;
 
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -38,6 +39,8 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    std::unique_ptr<ThreadSafeMessageQueue> messageQueue;
+
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProgrammerProcessor)
 };

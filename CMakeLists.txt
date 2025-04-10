@@ -78,6 +78,9 @@ juce_add_plugin("${PROJECT_NAME}"
     PLUGIN_CODE BF04
     FORMATS "${FORMATS}"
 
+    # MIDI PROPERTIES
+    NEEDS_MIDI_OUTPUT TRUE
+
     # The name of your final executable
     # This is how it's listed in the DAW
     # This can be different from PROJECT_NAME and can have spaces!

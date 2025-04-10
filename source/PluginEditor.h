@@ -3,32 +3,34 @@
 #include "PluginProcessor.h"
 #include "BinaryData.h"
 #include "melatonin_inspector/melatonin_inspector.h"
+#include "Parameters.h"
 
 //==============================================================================
-class PluginEditor : public juce::AudioProcessorEditor
+class ProgrammerEditor : public juce::AudioProcessorEditor, private juce::Timer
 {
 public:
-    explicit PluginEditor (PluginProcessor&);
-    ~PluginEditor() override;
+    explicit ProgrammerEditor (ProgrammerProcessor&);
+    ~ProgrammerEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void updateToggleState (juce::Button* button, juce::String name)
-    {
-        auto state = button->getToggleState();
-        juce::String stateString = state ? "ON" : "OFF";
-        juce::Logger::outputDebugString (name + " Button changed to " + stateString);
-    }
+    juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
+
+    // Test interface for callback - this is not nice, figure out how to 
+    // get timer to fire in test
+    void testTimerCallback() { timerCallback(); }
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    PluginProcessor& processorRef;
+    ProgrammerProcessor& processorRef;
     std::unique_ptr<melatonin::Inspector> inspector;
     juce::TextButton inspectButton { "Inspect the UI" };
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProgrammerEditor)
+    
+    void timerCallback() override;
 
-    juce::ToggleButton buttonEnableArp;
+    Parameters params;
 };

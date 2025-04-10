@@ -102,4 +102,58 @@ TEST_CASE("Parameters class functionality", "[Parameters]")
         int value = params.getParameterValue("ArpEnable");
         REQUIRE(value == 1);
     }
+
+    SECTION("Updating parameter value")
+    {
+        // Add a parameter first
+        params.addParameter("ArpEnable", 117, 0, 0, 1);
+
+        // Update the parameter's value
+        params.setParameter("ArpEnable", 1);
+
+        // Check that the value has been updated
+        REQUIRE(params.isParameterUpdated("ArpEnable") == true);
+    }
+
+    SECTION("Deleting a parameter")
+    {
+        // Add some parameter first
+        params.addParameter("MyParameter0", 117, 0, 0, 1);
+        params.addParameter("MyParameter1", 117, 0, 0, 1);
+        params.addParameter("MyParameter2", 117, 0, 0, 1);
+
+        // Delete a parameter
+        params.deleteParameter("MyParameter0");
+
+        // Check that the parameter has been deleted
+        REQUIRE_THROWS_AS(params.getParameter("MyParameter0"), std::runtime_error);
+
+    }
+
+    SECTION("Iterating over parameters and checking updated status")
+    {
+        // Add multiple parameters
+        params.addParameter("Param1", 101, 10, 0, 100);
+        params.addParameter("Param2", 102, 20, 0, 200);
+        params.addParameter("Param3", 103, 30, 0, 300);
+
+        // Update some parameters
+        params.setParameter("Param1", 50);
+        params.setParameter("Param3", 100);
+
+        // Iterate over parameters and check updated status
+        auto allParams = params.getAllParameters();
+        for (const auto& param : allParams)
+        {
+            auto paramName = param.first;
+            if (paramName == "Param1" || paramName == "Param3")
+            {
+                REQUIRE(params.isParameterUpdated(paramName) == true);
+            }
+            else
+            {
+                REQUIRE(params.isParameterUpdated(paramName) == false);
+            }
+        }
+    }
 }
