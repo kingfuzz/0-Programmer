@@ -1,7 +1,5 @@
 #include "PluginEditor.h"
-
-// TODO: Move all configuration (incl. controllable parameters) to file.
-#define MIDI_CHANNEL 1
+#include "configuration.h"
 
 ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p)
@@ -22,9 +20,18 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
         inspector->setVisible (true);
     };
 
-    // Add arp button and parameter
+    // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
-    params.addParameter ("EnableArp", 117, 0, 0, 1);
+    params.addParameter (ENABLE_ARP_NAME, ENABLE_ARP_CC, ENABLE_ARP_VALUE, ENABLE_ARP_MIN_VALUE, ENABLE_ARP_MAX_VALUE);
+    // Add LEGATO SLIDER
+    addAndMakeVisible (portamentoSlider);
+    portamentoSlider.setRange (0, 127, 1);
+    portamentoSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    portamentoSlider.setPopupDisplayEnabled (true, false, this);
+    params.addParameter (PORTAMENTO_NAME, PORTAMENTO_CC, PORTAMENTO_VALUE, PORTAMENTO_MIN_VALUE, PORTAMENTO_MAX_VALUE);
+    addAndMakeVisible (portamentoLabel);
+    portamentoLabel.setText (PORTAMENTO_NAME, juce::dontSendNotification);
+    portamentoLabel.attachToComponent (&portamentoSlider, true);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -67,6 +74,7 @@ void ProgrammerEditor::paint (juce::Graphics& g)
 
     // Draw the content area
     buttonEnableArp.setBounds (area.removeFromTop(contentItemHeight));
+    portamentoSlider.setBounds (area.removeFromTop(contentItemHeight));
 }
 
 void ProgrammerEditor::resized()
@@ -80,7 +88,8 @@ void ProgrammerEditor::resized()
 void ProgrammerEditor::timerCallback()
 {
     // Update the parameter value based on the button states
-    params.setParameter ("EnableArp", buttonEnableArp.getToggleState() ? 1 : 0);
+    params.setParameter (ENABLE_ARP_NAME, buttonEnableArp.getToggleState() ? 1 : 0);
+    params.setParameter (PORTAMENTO_NAME, (int)portamentoSlider.getValue());
     
     // Iterate over parameters and check if they are updated
     auto allParams = params.getAllParameters();

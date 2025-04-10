@@ -17,6 +17,8 @@ public:
     void resized() override;
 
     juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
+    juce::Slider portamentoSlider;
+    juce::Label portamentoLabel;
 
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test
