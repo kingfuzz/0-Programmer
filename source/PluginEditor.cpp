@@ -35,7 +35,8 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+
+    setSize (400, 300 + inspectButtonHeight);
 
     // Start timer - this is used to scan the UI for changes
     // NOTE: Currently scanning once per second - this should be faster for a snappy UI.
@@ -56,33 +57,37 @@ void ProgrammerEditor::paint (juce::Graphics& g)
 
     // Define spacers for UI
     auto area = getLocalBounds();
-    auto headerFooterHeight = 36;
+    auto headerHeight = 60;
+    auto footerHeight = 36;
     auto contentItemHeight = 24;
-    auto sidebarWidth = 50;
+    auto rightSidebarWidth = 50;
+    auto leftSidebarWidth = 75;
     
     // NOTE: Move to resized when adding support for resizing UI
     // Draw the header and footer
     auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
-    g.drawText (helloWorld, area.removeFromBottom (headerFooterHeight), juce::Justification::centred, false);
+    g.drawText (helloWorld, area.removeFromBottom (footerHeight), juce::Justification::centred, false);
+    // Draw inspector-button
+    inspectButton.setBounds (area.removeFromBottom(inspectButtonHeight));
 
-    auto helpText = juce::String ("Enter Program Pages on 0-Coast in order to use this app.\nPress and hold PGM_A to go to Program Pages. Hold PGM_B to exit.");
-    g.drawText (helpText, area.removeFromTop(headerFooterHeight) , juce::Justification::centred, false);
+
+    auto helpText = juce::String ("Enter Program Pages on 0-Coast in order to use this app.\nPress and hold PGM_A to go to Program Pages.\nHold PGM_B to exit.");
+    g.drawMultiLineText (helpText, 0,20, 400 , juce::Justification::centred);
+    area.removeFromTop(headerHeight);
 
     // Draw sidebar spacers
-    g.drawText ("", area.removeFromLeft (sidebarWidth), juce::Justification::centred, false);
-    g.drawText ("", area.removeFromRight (sidebarWidth), juce::Justification::centred, false);
+    g.drawText ("", area.removeFromLeft (leftSidebarWidth), juce::Justification::centred, false);
+    g.drawText ("", area.removeFromRight (rightSidebarWidth), juce::Justification::centred, false);
 
     // Draw the content area
     buttonEnableArp.setBounds (area.removeFromTop(contentItemHeight));
     portamentoSlider.setBounds (area.removeFromTop(contentItemHeight));
+
 }
 
 void ProgrammerEditor::resized()
 {
-    // layout the positions of your child components here
-    auto area = getLocalBounds();
-    area.removeFromBottom(50);
-    inspectButton.setBounds (getLocalBounds().withSizeKeepingCentre(100, 50));
+    // At some point, let's enable resizing of the UI and paint stuff here   
 }
 
 void ProgrammerEditor::timerCallback()
