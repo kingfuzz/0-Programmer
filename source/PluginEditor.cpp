@@ -23,7 +23,19 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
     params.addParameter (ENABLE_ARP_NAME, ENABLE_ARP_CC, ENABLE_ARP_VALUE, ENABLE_ARP_MIN_VALUE, ENABLE_ARP_MAX_VALUE);
-    // Add LEGATO SLIDER
+
+    // Add ARP TYPE
+    addAndMakeVisible (arpTypeMenu);
+    arpTypeMenu.addItem ("Normal", 1);
+    arpTypeMenu.addItem ("Latch", 2);
+    arpTypeMenu.setSelectedId (1);
+    params.addParameter (ARP_TYPE_NAME, ARP_TYPE_CC, ARP_TYPE_VALUE, ARP_TYPE_MIN_VALUE, ARP_TYPE_MAX_VALUE);
+
+    // Add LEGATO ENABLE
+    addAndMakeVisible (buttonEnableLegato);
+    params.addParameter (ENABLE_LEGATO_NAME, ENABLE_LEGATO_CC, ENABLE_LEGATO_VALUE, ENABLE_LEGATO_MIN_VALUE, ENABLE_LEGATO_MAX_VALUE);
+
+    // Add PORTAMENTO SLIDER
     addAndMakeVisible (portamentoSlider);
     portamentoSlider.setRange (0, 127, 1);
     portamentoSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
@@ -59,7 +71,7 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     auto area = getLocalBounds();
     auto headerHeight = 60;
     auto footerHeight = 36;
-    auto contentItemHeight = 24;
+    auto contentItemHeight = 28;
     auto rightSidebarWidth = 50;
     auto leftSidebarWidth = 75;
     
@@ -81,6 +93,8 @@ void ProgrammerEditor::paint (juce::Graphics& g)
 
     // Draw the content area
     buttonEnableArp.setBounds (area.removeFromTop(contentItemHeight));
+    arpTypeMenu.setBounds (area.removeFromTop(contentItemHeight));
+    buttonEnableLegato.setBounds (area.removeFromTop(contentItemHeight));
     portamentoSlider.setBounds (area.removeFromTop(contentItemHeight));
 
 }
@@ -94,6 +108,8 @@ void ProgrammerEditor::timerCallback()
 {
     // Update the parameter value based on the button states
     params.setParameter (ENABLE_ARP_NAME, buttonEnableArp.getToggleState() ? 1 : 0);
+    params.setParameter (ARP_TYPE_NAME, arpTypeMenu.getSelectedId() - 1); // -1 because ComboBox is 1-indexed
+    params.setParameter (ENABLE_LEGATO_NAME, buttonEnableLegato.getToggleState() ? 1 : 0);
     params.setParameter (PORTAMENTO_NAME, (int)portamentoSlider.getValue());
     
     // Iterate over parameters and check if they are updated

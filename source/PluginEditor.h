@@ -16,9 +16,17 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    // UI Elements
     juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
+    juce::ComboBox arpTypeMenu;
+    juce::ToggleButton buttonEnableLegato { "Enable Legato" };
     juce::Slider portamentoSlider;
     juce::Label portamentoLabel;
+    
+
+
+
+
 
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test
