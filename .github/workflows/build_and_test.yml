@@ -208,11 +208,12 @@ jobs:
         working-directory: ${{ env.ARTIFACTS_PATH }}
         run: 7z a -tzip "${{ env.ARTIFACT_NAME }}.zip" "-xr!lib${{ env.PRODUCT_NAME }}_SharedCode.a" .
 
-      - name: Generate Installer
-        if: ${{ matrix.name == 'Windows' }}
-        run: |
-          iscc "packaging\installer.iss"
-          mv "packaging/Output/${{ env.ARTIFACT_NAME }}.exe" "${{ env.ARTIFACTS_PATH }}/"
+      # NOTE: Skipping windows installer
+      #- name: Generate Installer
+      #  if: ${{ matrix.name == 'Windows' }}
+      #  run: |
+      #    iscc "packaging\installer.iss"
+      #    mv "packaging/Output/${{ env.ARTIFACT_NAME }}.exe" "${{ env.ARTIFACTS_PATH }}/"
 
       # NOTE: Skipping signing for now
       #- name: Codesign with Azure Trusted Signing
