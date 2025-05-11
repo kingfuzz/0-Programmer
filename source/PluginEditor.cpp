@@ -20,11 +20,20 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
         inspector->setVisible (true);
     };
 
+    addAndMakeVisible(headerLabel);
+    headerLabel.setText ("Play Modes", juce::dontSendNotification);
+    headerLabel.setFont (juce::Font (16.0f, juce::Font::bold));
+    headerLabel.setJustificationType (juce::Justification::bottomLeft);
+
+    addAndMakeVisible(headerSeparator);
+
     // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
     params.addParameter (ENABLE_ARP_NAME, ENABLE_ARP_CC, ENABLE_ARP_VALUE, ENABLE_ARP_MIN_VALUE, ENABLE_ARP_MAX_VALUE);
 
     // Add ARP TYPE
+    addAndMakeVisible (arpTypeLabel);
+    arpTypeLabel.setText ("Arp Mode", juce::dontSendNotification);
     addAndMakeVisible (arpTypeMenu);
     arpTypeMenu.addItem ("Normal", 1);
     arpTypeMenu.addItem ("Latch", 2);
@@ -43,7 +52,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (PORTAMENTO_NAME, PORTAMENTO_CC, PORTAMENTO_VALUE, PORTAMENTO_MIN_VALUE, PORTAMENTO_MAX_VALUE);
     addAndMakeVisible (portamentoLabel);
     portamentoLabel.setText (PORTAMENTO_NAME, juce::dontSendNotification);
-    portamentoLabel.attachToComponent (&portamentoSlider, true);
+    //portamentoLabel.attachToComponent (&portamentoSlider, true);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -69,33 +78,65 @@ void ProgrammerEditor::paint (juce::Graphics& g)
 
     // Define spacers for UI
     auto area = getLocalBounds();
-    auto headerHeight = 60;
+    auto headerHeight = 36;
     auto footerHeight = 36;
-    auto contentItemHeight = 28;
+    auto contentItemHeight = 32;
     auto rightSidebarWidth = 50;
-    auto leftSidebarWidth = 75;
+    auto leftSidebarWidth = 50;
+    auto labelWidth = 75;
+    auto spacerWidth = 10;
     
     // NOTE: Move to resized when adding support for resizing UI
     // Draw the header and footer
-    auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
-    g.drawText (helloWorld, area.removeFromBottom (footerHeight), juce::Justification::centred, false);
-    // Draw inspector-button
-    inspectButton.setBounds (area.removeFromBottom(inspectButtonHeight));
-
-
-    auto helpText = juce::String ("Enter Program Pages on 0-Coast in order to use this app.\nPress and hold PGM_A to go to Program Pages.\nHold PGM_B to exit.");
-    g.drawMultiLineText (helpText, 0,20, 400 , juce::Justification::centred);
-    area.removeFromTop(headerHeight);
+    if (enableInspector == true)
+    {
+        auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
+        g.drawText (helloWorld, area.removeFromBottom (footerHeight), juce::Justification::centred, false);
+        // Draw inspector-button
+        inspectButton.setBounds (area.removeFromBottom(inspectButtonHeight));
+    }
 
     // Draw sidebar spacers
     g.drawText ("", area.removeFromLeft (leftSidebarWidth), juce::Justification::centred, false);
     g.drawText ("", area.removeFromRight (rightSidebarWidth), juce::Justification::centred, false);
 
+
+    // Draw the header    
+    headerLabel.setBounds( area.removeFromTop (headerHeight)) ;
+    headerSeparator.setBounds (area.removeFromTop (contentItemHeight/2));
+    //area.removeFromTop(headerHeight);
+
+    //auto helpText = juce::String ("Enter Program Pages on 0-Coast in order to use this app.\nPress and hold PGM_A to go to Program Pages.\nHold PGM_B to exit.");
+    //g.drawMultiLineText (helpText, 0,20, 400 , juce::Justification::centred);
+    
     // Draw the content area
     buttonEnableArp.setBounds (area.removeFromTop(contentItemHeight));
-    arpTypeMenu.setBounds (area.removeFromTop(contentItemHeight));
+
+    // Doing the tricky label + comboBox positioning here
+    arpTypeLabel.setBounds (area.removeFromTop(contentItemHeight));
+    auto arpTypeLabelBounds = arpTypeLabel.getBounds();
+    auto arpTypeMenuBounds = arpTypeLabelBounds;
+    arpTypeLabelBounds.setWidth(labelWidth);
+    arpTypeLabel.setBounds (arpTypeLabelBounds);
+    arpTypeMenuBounds.setX (arpTypeLabelBounds.getX() + labelWidth + spacerWidth);
+    arpTypeMenuBounds.setWidth (area.getWidth() - labelWidth - spacerWidth);
+    arpTypeMenu.setBounds (arpTypeMenuBounds);
+    arpTypeMenu.setBounds (arpTypeMenuBounds.reduced(5));
+    // NOTE: This is a bit of a hack - we should really use a custom component for the comboBox
+    
     buttonEnableLegato.setBounds (area.removeFromTop(contentItemHeight));
-    portamentoSlider.setBounds (area.removeFromTop(contentItemHeight));
+    
+    // The slider and label are a bit tricky to position - we should fix this
+    // using a custom slider + label component
+    portamentoLabel.setBounds (area.removeFromTop(contentItemHeight));
+    auto labelBounds = portamentoLabel.getBounds();
+    auto sliderBounds = labelBounds;
+    labelBounds.setWidth(labelWidth);
+    portamentoLabel.setBounds (labelBounds);
+    sliderBounds.setX (labelBounds.getX() + labelWidth + spacerWidth);
+    sliderBounds.setWidth (area.getWidth() - labelWidth - spacerWidth);
+    portamentoSlider.setBounds (sliderBounds);
+
 
 }
 

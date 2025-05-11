@@ -12,7 +12,7 @@ But here's what we'll do first:
 * Make it possible to enable/disable the 0-Coast arpeggiator. **[DONE]**
 * Add end-2-end integration test: Simulate button press, verify that correct message is in buffer. **[DONE]**
 
-A quick note on controlling the 0-Coast. The application has no way of knowing the state of the 0-Coast, ie. it can't read data, only send. 0-Coast will save parameter changes, so some out-of.sync scenario between the programmwe and the device is likely to happen. So, how do we ensure sync? We could reset all parameters, when the app loads - but that could be annoying as well. A reset button?
+A quick note on controlling the 0-Coast. The application has no way of knowing the state of the 0-Coast, ie. it can't read data, only send. 0-Coast will save parameter changes between power cycles, so some out-of-sync scenario between the programmer and the device is likely to happen. So, how do we ensure sync? We could reset all parameters, when the app loads - but that could be annoying as well. A reset button?
 
 
 Stuff to add:
@@ -20,5 +20,8 @@ Stuff to add:
 * Document general architecture (Here it would be nice to add some developer docs, etc. also)
 * Proper GUI layout and graphics
 * Store parameter configuration as YAML
+* Add "Reset 0 Coast" Button
+
+
 
 This project is built using the fantastic [PAMPLEJUCE](https://github.com/sudara/pamplejuce) template.
