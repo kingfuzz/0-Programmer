@@ -24,4 +24,7 @@ Stuff to add:
 * Store parameter configuration as YAML
 * Add "Reset 0 Coast" Button
 
+Nice to have:
+* A python simulator to visualize received commands - would simplify testing.
+
 This project is built using the fantastic [PAMPLEJUCE](https://github.com/sudara/pamplejuce) template.

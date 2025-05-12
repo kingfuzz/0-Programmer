@@ -41,6 +41,8 @@ public:
     juce::Label headerLabel;
     HorizontalSeparator headerSeparator;
     bool enableInspector = true;
+
+    HorizontalSeparator footerSeparator;
     
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test

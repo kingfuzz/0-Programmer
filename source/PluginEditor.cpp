@@ -5,6 +5,12 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p)
 {
     juce::ignoreUnused (processorRef);
+#ifdef NDEBUG
+    // If we're in release mode, disable the inspector
+    enableInspector = false;
+#else
+    juce::Logger::outputDebugString (">>> ProgrammerEditor: Started in DEBUG mode");
+#endif
 
     /* MELATONIN UI INSPECTOR */
     addAndMakeVisible (inspectButton);
@@ -26,6 +32,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     headerLabel.setJustificationType (juce::Justification::bottomLeft);
 
     addAndMakeVisible(headerSeparator);
+    addAndMakeVisible(footerSeparator);
 
     // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
@@ -95,6 +102,11 @@ void ProgrammerEditor::paint (juce::Graphics& g)
         // Draw inspector-button
         inspectButton.setBounds (area.removeFromBottom(inspectButtonHeight));
     }
+    else
+    {
+        g.drawText ("", area.removeFromBottom (headerHeight), juce::Justification::centred, false);
+    }
+
 
     // Draw sidebar spacers
     g.drawText ("", area.removeFromLeft (leftSidebarWidth), juce::Justification::centred, false);
@@ -105,6 +117,9 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     headerLabel.setBounds( area.removeFromTop (headerHeight)) ;
     headerSeparator.setBounds (area.removeFromTop (contentItemHeight/2));
     //area.removeFromTop(headerHeight);
+    
+    // Draw the footer
+    footerSeparator.setBounds (area.removeFromBottom (contentItemHeight/2));
 
     //auto helpText = juce::String ("Enter Program Pages on 0-Coast in order to use this app.\nPress and hold PGM_A to go to Program Pages.\nHold PGM_B to exit.");
     //g.drawMultiLineText (helpText, 0,20, 400 , juce::Justification::centred);
