@@ -26,11 +26,11 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
         inspector->setVisible (true);
     };
 
+    // Add header and footer
     addAndMakeVisible(headerLabel);
     headerLabel.setText ("Play Modes", juce::dontSendNotification);
     headerLabel.setFont (juce::Font (16.0f, juce::Font::bold));
     headerLabel.setJustificationType (juce::Justification::bottomLeft);
-
     addAndMakeVisible(headerSeparator);
     addAndMakeVisible(footerSeparator);
 
@@ -59,12 +59,20 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (PORTAMENTO_NAME, PORTAMENTO_CC, PORTAMENTO_VALUE, PORTAMENTO_MIN_VALUE, PORTAMENTO_MAX_VALUE);
     addAndMakeVisible (portamentoLabel);
     portamentoLabel.setText (PORTAMENTO_NAME, juce::dontSendNotification);
-    //portamentoLabel.attachToComponent (&portamentoSlider, true);
-
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-
-    setSize (400, 300 + inspectButtonHeight);
+    
+    // Calculate the size of the UI
+    auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*contentItemHeight/2;
+    if (enableInspector == true)
+    {
+        height += inspectButtonHeight + footerHeight;
+    }
+    else
+    {
+        height += headerHeight;
+    }
+    // Set the size of the UI
+    auto width = 400 * numberOfColumns;
+    setSize (width, height);
 
     // Start timer - this is used to scan the UI for changes
     // NOTE: Currently scanning once per second - this should be faster for a snappy UI.
@@ -85,13 +93,6 @@ void ProgrammerEditor::paint (juce::Graphics& g)
 
     // Define spacers for UI
     auto area = getLocalBounds();
-    auto headerHeight = 36;
-    auto footerHeight = 36;
-    auto contentItemHeight = 32;
-    auto rightSidebarWidth = 50;
-    auto leftSidebarWidth = 50;
-    auto labelWidth = 75;
-    auto spacerWidth = 10;
     
     // NOTE: Move to resized when adding support for resizing UI
     // Draw the header and footer

@@ -13,7 +13,10 @@ But here's what we'll do first:
 * Add end-2-end integration test: Simulate button press, verify that correct message is in buffer. **[DONE]**
 * Test some initial parameters
 * Clean up (CI, initial docs)
-* Initial (very limited release)
+  * Make CI release unsigned builds
+  * Write simple user guide
+* Update to latest Melatonin Inspector to remove a bunch of deprecation warnings.
+* Initial (very limited) release
 
 A quick note on controlling the 0-Coast. The application has no way of knowing the state of the 0-Coast, ie. it can't read data, only send. 0-Coast will save parameter changes between power cycles, so some out-of-sync scenario between the programmer and the device is likely to happen. So, how do we ensure sync? We could reset all parameters, when the app loads - but that could be annoying as well. A reset button?
 

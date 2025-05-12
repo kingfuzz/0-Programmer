@@ -52,11 +52,25 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     ProgrammerProcessor& processorRef;
+    
+    // Melatonin Inspector Stuff
     std::unique_ptr<melatonin::Inspector> inspector;
     juce::TextButton inspectButton { "Inspect the UI" };
     int inspectButtonHeight = 50;
+
+    // UI Layout values
+    int headerHeight = 36;
+    int footerHeight = 36;
+    int contentItemHeight = 32;
+    int rightSidebarWidth = 50;
+    int leftSidebarWidth = 50;
+    int labelWidth = 75;
+    int spacerWidth = 10;
+    int numberOfContentItems = 4;
+    int numberOfSpacers = 2;
+    int numberOfColumns = 1;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProgrammerEditor)
-    
     void timerCallback() override;
 
     Parameters params;
