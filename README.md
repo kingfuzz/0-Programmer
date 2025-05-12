@@ -12,11 +12,15 @@ But here's what we'll do first:
 * Make it possible to enable/disable the 0-Coast arpeggiator. **[DONE]**
 * Add end-2-end integration test: Simulate button press, verify that correct message is in buffer. **[DONE]**
 * Test some initial parameters
+  * Test vs MidiView **[DONE]**
+  * Test vs Hardware
 * Clean up (CI, initial docs)
   * Make CI release unsigned builds
-  * Write simple user guide
+  * Write simple user guide / or a help text in the UI? 
 * Update to latest Melatonin Inspector to remove a bunch of deprecation warnings.
 * Initial (very limited) release
+
+After these initial steps, we'll start to plan additional features/bugs using Githubs issue tracker and stop committing straight to main. But we need to have a stable main branch with some actual functionality first ;-)
 
 A quick note on controlling the 0-Coast. The application has no way of knowing the state of the 0-Coast, ie. it can't read data, only send. 0-Coast will save parameter changes between power cycles, so some out-of-sync scenario between the programmer and the device is likely to happen. So, how do we ensure sync? We could reset all parameters, when the app loads - but that could be annoying as well. A reset button?
 
