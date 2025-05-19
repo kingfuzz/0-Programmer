@@ -282,7 +282,6 @@ jobs:
         uses: actions/download-artifact@v4
 
       - name: Create Release
-        if: ${{ matrix.name == 'macOS' }}
         uses: softprops/action-gh-release@v2
         with:
           prerelease: true
