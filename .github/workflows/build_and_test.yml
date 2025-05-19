@@ -266,7 +266,7 @@ jobs:
         #  path: packaging/${{ env.ARTIFACT_NAME }}.pkg
         with:
           name: ${{ env.ARTIFACT_NAME }}.app
-          path: ${{ env.STANDALONE_PATH }}
+          path: "${{ env.ARTIFACTS_PATH }}/${{ env.ARTIFACT_NAME }}.app"
 
   release:
     if: contains(github.ref, 'tags/v')
