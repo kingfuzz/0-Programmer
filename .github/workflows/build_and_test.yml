@@ -193,9 +193,9 @@ jobs:
           #pkgbuild --identifier "${{ env.BUNDLE_ID }}.clap.pkg" --version $VERSION --component "${{ env.CLAP_PATH }}" --install-location "/Library/Audio/Plug-Ins/CLAP" "packaging/${{ env.PRODUCT_NAME }}.clap.pkg"
           
           # Standalone is special, needs a boolean to always install in /Applications
-          pkgbuild --analyze --root "$(dirname "${{ env.STANDALONE_PATH }}")" standalone.plist
-          plutil -replace BundleIsRelocatable -bool NO standalone.plist
-          pkgbuild --identifier "${{ env.BUNDLE_ID }}.app.pkg" --version $VERSION --root "$(dirname "${{ env.STANDALONE_PATH }}")" --component-plist standalone.plist --install-location "/Applications" "packaging/${{ env.PRODUCT_NAME }}.app.pkg"
+          #pkgbuild --analyze --root "$(dirname "${{ env.STANDALONE_PATH }}")" standalone.plist
+          #plutil -replace BundleIsRelocatable -bool NO standalone.plist
+          #pkgbuild --identifier "${{ env.BUNDLE_ID }}.app.pkg" --version $VERSION --root "$(dirname "${{ env.STANDALONE_PATH }}")" --component-plist standalone.plist --install-location "/Applications" "packaging/${{ env.PRODUCT_NAME }}.app.pkg"
           
           # NOTE: Skipping productbuild and notarization
           #cd packaging
@@ -204,6 +204,10 @@ jobs:
 
           #xcrun notarytool submit "${{ env.ARTIFACT_NAME }}.pkg" --apple-id ${{ secrets.NOTARIZATION_USERNAME }} --password ${{ secrets.NOTARIZATION_PASSWORD }} --team-id ${{ secrets.TEAM_ID }} --wait
           #xcrun stapler staple "${{ env.ARTIFACT_NAME }}.pkg"
+
+          # NOTE: instead of notarizing, we are just zipping the app
+          zip -r --symlinks "${{ env.ARTIFACTS_PATH }}/${{ env.ARTIFACT_NAME }}.zip" "${{ env.STANDALONE_PATH }}"
+
 
       - name: Zip
         if: ${{ matrix.name == 'Linux' }}
@@ -265,8 +269,8 @@ jobs:
         #  name: ${{ env.ARTIFACT_NAME }}.pkg
         #  path: packaging/${{ env.ARTIFACT_NAME }}.pkg
         with:
-          name: "${{ env.ARTIFACT_NAME }}.app.zip"
-          path: "${{ env.STANDALONE_PATH }}"
+          name: "${{ env.ARTIFACT_NAME }}.zip"
+          path: "${{ env.ARTIFACTS_PATH }}/${{ env.ARTIFACT_NAME }}.zip"
 
   release:
     if: contains(github.ref, 'tags/v')
