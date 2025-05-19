@@ -1,55 +1,45 @@
 # 0-Programmer
 
-0-Programmer is a simple application which allows you to edit the program pages of your Make Noise 0-Coast. The goal is to provide the functionality of the Make Noise Max4Live Page programmer, but in a standalone application. Simple as that :-)
+0-Programmer is a simple application which allows you to edit the program pages of your Make Noise 0-Coast. The goal is to provide the functionality of the Make Noise Max4Live Page programmer, but in a standalone application. Simple as that :blush:
+
+We currently support MacOS and an experimental, untested, Linux version. If there's any interest, supporting iOS and Windows could be considered.
 
 ## Usage
-Find and Download the app in the *Releases* section to the right :arrow_right: :arrow_right: :arrow_right:
+Find and download the app in the *Releases* section to the right :arrow_right: :arrow_right: :arrow_right:
 
 To use the app, do as follows:
-1. Connect your 0-Coast to a Midi Interface
-2. Select that Midi Interface the 0-Programmer Options.
-3. 
+1. When running the app, you may need to right-click and select "open", as the app is not certified/notarized/whatever...
+2. Connect your 0-Coast to a Midi Interface
+3. Select that Midi Interface the 0-Programmer Options.
+4. On the 0-Coast device, press and hold PGM_A to enter program pages.
+3. Have fun!
 
-The project has just started, so not much functionality exists yet. Also it looks like a dumpster fire, as no effort has been put into the UI yet.
+## Feedback
+All feedback is welcome - please use the issue tracker! Before submitting a new issue, try to search existing issues/upcoming features and see if that resolves your problem.
 
-But here's what we'll do first:
+# Developer Info
+This section will describe the nitty-gritty of developing, testing and releasing the application.
 
-* Make it possible to send some MIDI data to an interface by pressing a button. **[DONE]**
-* Make it possible to enable/disable the 0-Coast arpeggiator. **[DONE]**
-* Add end-2-end integration test: Simulate button press, verify that correct message is in buffer. **[DONE]**
-* Test some initial parameters
-  * Test vs MidiView **[DONE]**
-  * Test vs Hardware **[DONE]**
-* Clean up (CI, initial docs)
-  * Make CI release unsigned builds **[DONE]**
-  * Write ~~simple user guide~~ / or a help text in the UI? **[DONE]**
-* Update to latest Melatonin Inspector to remove a bunch of deprecation warnings. **[DONE]**
-* Initial (very limited) release _In Progress_
-
-After these initial steps, we'll start to plan additional features/bugs using Githubs issue tracker and stop committing straight to main. But we need to have a stable main branch with some actual functionality first ;-)
-
-A quick note on controlling the 0-Coast. The application has no way of knowing the state of the 0-Coast, ie. it can't read data, only send. 0-Coast will save parameter changes between power cycles, so some out-of-sync scenario between the programmer and the device is likely to happen. So, how do we ensure sync? We could reset all parameters, when the app loads - but that could be annoying as well. A reset button?
-
-Stuff to add:
-* Initial User Guide
-  * Test to generate screenshot - see test_helpers.h
-* Document general architecture (Here it would be nice to add some developer docs, etc. also)
-  * Overall structure
-  * Test suite overview
-  * MidiView test and HW tests.
-* Proper GUI layout and graphics
-  * Automate/refactor a bunch of the GUI component code.
-  * Column layout
-  * Help text in column
-* Store parameter configuration as YAML
-* Add "Reset 0 Coast" Button
-* Redo integration test using test_helpers.h
-* Plugin version, Windows support, Linux support, iOS, etc..
-
-Nice to have:
-* A python simulator to visualize received commands - would simplify testing.
+## Overall Structure
+Drawing and explanation
 
 
-This project is built using the fantastic [PAMPLEJUCE](https://github.com/sudara/pamplejuce) template.
-Releases are handled as in pamplejuce. ie: [Managing Releases](https://melatonin.dev/manuals/pamplejuce/life-with-pamplejuce/managing-releases/)
+## Test Suite Overview
+
+### SW Tests
+
+### HW Tests
+
+## Releases
+This project is based on the PampleJuce template, so releases are handled as in pamplejuce. ie: [Managing Releases](https://melatonin.dev/manuals/pamplejuce/life-with-pamplejuce/managing-releases/)
+
+## New Features and Planning
+The github issue tracker is used to track issues (duh!) and listing upcoming additions, features, fixes, etc. Feel free to add feature requests. I can't promise that any feature will be added, but I'll at least consider it.
+
+## Contributions
+PR's are welcome - fire away :blush: But, I may take some time reviewing any PR, so don't get impatient if I don't react immediately.
+
+# Acknowledgements
+This project is built using the fantastic [PAMPLEJUCE](https://github.com/sudara/pamplejuce) template - AKA the 1000hr shortcut for JUCE.
+
 
