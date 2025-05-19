@@ -1,8 +1,14 @@
 # 0-Programmer
 
-_NOTE: THIS IS A WORK IN PROGRESS - THE PROJECT HAS JUST STARTED, SO NOT MUCH IS BUILT YET_
-
 0-Programmer is a simple application which allows you to edit the program pages of your Make Noise 0-Coast. The goal is to provide the functionality of the Make Noise Max4Live Page programmer, but in a standalone application. Simple as that :-)
+
+## Usage
+Find and Download the app in the *Releases* section to the right :arrow_right: :arrow_right: :arrow_right:
+
+To use the app, do as follows:
+1. Connect your 0-Coast to a Midi Interface
+2. Select that Midi Interface the 0-Programmer Options.
+3. 
 
 The project has just started, so not much functionality exists yet. Also it looks like a dumpster fire, as no effort has been put into the UI yet.
 
@@ -38,7 +44,7 @@ Stuff to add:
 * Store parameter configuration as YAML
 * Add "Reset 0 Coast" Button
 * Redo integration test using test_helpers.h
-* Plugin version, Windows support, Linux support, etc..
+* Plugin version, Windows support, Linux support, iOS, etc..
 
 Nice to have:
 * A python simulator to visualize received commands - would simplify testing.
