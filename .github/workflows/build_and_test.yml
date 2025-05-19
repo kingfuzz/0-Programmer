@@ -1,4 +1,4 @@
-name: Pamplejuce
+name: Build_and_Test
 
 on:
   workflow_dispatch: # lets you run a build from the UI
@@ -283,7 +283,10 @@ jobs:
           prerelease: true
           # download-artifact puts these files in their own dirs...
           # Using globs sidesteps having to pass the version around
+          # NOTE: At the moment, we are only uploading the MacOS app - unsigned!
+          #files: |
+          #  */*.exe
+          #  */*.zip
+          #  */*.dmg
           files: |
-            */*.exe
-            */*.zip
-            */*.dmg
+            */*.app

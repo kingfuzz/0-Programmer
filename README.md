@@ -13,10 +13,10 @@ But here's what we'll do first:
 * Add end-2-end integration test: Simulate button press, verify that correct message is in buffer. **[DONE]**
 * Test some initial parameters
   * Test vs MidiView **[DONE]**
-  * Test vs Hardware
+  * Test vs Hardware **[DONE]**
 * Clean up (CI, initial docs)
-  * Make CI release unsigned builds
-  * Write simple user guide / or a help text in the UI? 
+  * Make CI release unsigned builds **[DONE]**
+  * Write ~~simple user guide~~ / or a help text in the UI? **[DONE]**
 * Update to latest Melatonin Inspector to remove a bunch of deprecation warnings.
 * Initial (very limited) release
 

@@ -33,6 +33,14 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     headerLabel.setJustificationType (juce::Justification::bottomLeft);
     addAndMakeVisible(headerSeparator);
     addAndMakeVisible(footerSeparator);
+    addAndMakeVisible(footerHelpLabel1);
+    addAndMakeVisible(footerHelpLabel2);
+    footerHelpLabel1.setText ("Press and hold PGM_A to go to Program Pages. Hold PGM_B to exit.", juce::dontSendNotification);
+    footerHelpLabel2.setText ("Ensure MIDI Output is set to interface connected to 0-Coast", juce::dontSendNotification);
+    footerHelpLabel1.setJustificationType (juce::Justification::left);
+    footerHelpLabel2.setJustificationType (juce::Justification::left);
+    footerHelpLabel1.setFont (juce::Font (11.0f, juce::Font::plain));
+    footerHelpLabel2.setFont (juce::Font (11.0f, juce::Font::plain));
 
     // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
@@ -118,12 +126,12 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     headerLabel.setBounds( area.removeFromTop (headerHeight)) ;
     headerSeparator.setBounds (area.removeFromTop (contentItemHeight/2));
     //area.removeFromTop(headerHeight);
-    
-    // Draw the footer
-    footerSeparator.setBounds (area.removeFromBottom (contentItemHeight/2));
 
-    //auto helpText = juce::String ("Enter Program Pages on 0-Coast in order to use this app.\nPress and hold PGM_A to go to Program Pages.\nHold PGM_B to exit.");
-    //g.drawMultiLineText (helpText, 0,20, 400 , juce::Justification::centred);
+        
+    // Draw the footer - This will be a help text and a separator
+    footerHelpLabel1.setBounds (area.removeFromBottom (contentItemHeight/2));
+    footerHelpLabel2.setBounds (area.removeFromBottom (contentItemHeight/2));
+    footerSeparator.setBounds (area.removeFromBottom (contentItemHeight/2));
     
     // Draw the content area
     buttonEnableArp.setBounds (area.removeFromTop(contentItemHeight));

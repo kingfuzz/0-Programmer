@@ -43,6 +43,8 @@ public:
     bool enableInspector = true;
 
     HorizontalSeparator footerSeparator;
+    juce::Label footerHelpLabel1;
+    juce::Label footerHelpLabel2;
     
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test
@@ -66,7 +68,7 @@ private:
     int leftSidebarWidth = 50;
     int labelWidth = 75;
     int spacerWidth = 10;
-    int numberOfContentItems = 4;
+    int numberOfContentItems = 6;
     int numberOfSpacers = 2;
     int numberOfColumns = 1;
 
