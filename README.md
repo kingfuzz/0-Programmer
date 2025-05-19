@@ -23,11 +23,11 @@ All feedback is welcome - please use the issue tracker! Before submitting a new 
 This section will describe the nitty-gritty of developing, testing and releasing the application.
 
 ## Overall Structure
-The app follows the basic structure of a JUCE plugin, so there's two major domains: the Editor (handling the GUI) and the processor (handling realtime audio). So why do we do this if we just want to send some simple control messages in a standalone app? Basically, because we wan't to be able to release this as a plugin later on, so keeping this structure will make this step simpler. Also, it allows us to build some bits that may be usefull for other apps as well.
+The app follows the basic structure of a JUCE plugin, so there's two major domains: the _Editor_ (handling the GUI) and the _Processor_ (handling realtime audio). So why do we do this if we just want to send some simple control messages in a standalone app? Well, because we wan't to be able to release this as a plugin later on, so keeping this structure will make this step simpler. Also, it allows us to build some bits that may be usefull for other apps as well.
 
-So, the Editor runs the GUI. A timer will trigger at a certain interval, and scan all GUI element values. Each of these values are stored in th `Parameters` class. This class will stores parameters, and contains additional information about the paramter, such as range, which MIDI CC# to use to adjust the parameter.
+So, the Editor runs the GUI. A timer will trigger at a certain interval, and scan all GUI element values. Each of these values are stored in the `Parameters` class. This class will store parameters, and contains additional information such as range, which MIDI CC# to use, etc.
 
-In case any value has changed, we'll put a message into a `MessageQueue`. When the processor/audio thread fires, it will consume any messages in the queue and send midi messages to the selected midi output.
+In case any value has changed, we'll put a message into a `MessageQueue`. When the processor/audio thread fires, it will consume any messages in the queue and send these as Midi messages to the Midi output.
 
 Simple!
 
