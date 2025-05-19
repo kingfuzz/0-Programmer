@@ -206,7 +206,7 @@ jobs:
           #xcrun stapler staple "${{ env.ARTIFACT_NAME }}.pkg"
 
           # NOTE: instead of notarizing, we are just zipping the app
-          zip -r --symlinks "${{ env.ARTIFACTS_PATH }}/${{ env.ARTIFACT_NAME }}.zip" "${{ env.STANDALONE_PATH }}"
+          ditto -c -k --sequesterRsrc --keepParent "${{ env.STANDALONE_PATH }}" "${{ env.ARTIFACTS_PATH }}/${{ env.ARTIFACT_NAME }}.zip"
 
 
       - name: Zip
