@@ -17,7 +17,7 @@ But here's what we'll do first:
 * Clean up (CI, initial docs)
   * Make CI release unsigned builds **[DONE]**
   * Write ~~simple user guide~~ / or a help text in the UI? **[DONE]**
-* Update to latest Melatonin Inspector to remove a bunch of deprecation warnings.
+* Update to latest Melatonin Inspector to remove a bunch of deprecation warnings. **[DONE]**
 * Initial (very limited) release
 
 After these initial steps, we'll start to plan additional features/bugs using Githubs issue tracker and stop committing straight to main. But we need to have a stable main branch with some actual functionality first ;-)

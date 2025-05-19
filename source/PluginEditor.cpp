@@ -29,7 +29,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     // Add header and footer
     addAndMakeVisible(headerLabel);
     headerLabel.setText ("Play Modes", juce::dontSendNotification);
-    headerLabel.setFont (juce::Font (16.0f, juce::Font::bold));
+    headerLabel.setFont (juce::FontOptions (16.0f, juce::Font::bold));
     headerLabel.setJustificationType (juce::Justification::bottomLeft);
     addAndMakeVisible(headerSeparator);
     addAndMakeVisible(footerSeparator);
@@ -39,8 +39,8 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     footerHelpLabel2.setText ("Ensure MIDI Output is set to interface connected to 0-Coast", juce::dontSendNotification);
     footerHelpLabel1.setJustificationType (juce::Justification::left);
     footerHelpLabel2.setJustificationType (juce::Justification::left);
-    footerHelpLabel1.setFont (juce::Font (11.0f, juce::Font::plain));
-    footerHelpLabel2.setFont (juce::Font (11.0f, juce::Font::plain));
+    footerHelpLabel1.setFont (juce::FontOptions (11.0f, juce::Font::plain));
+    footerHelpLabel2.setFont (juce::FontOptions (11.0f, juce::Font::plain));
 
     // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
