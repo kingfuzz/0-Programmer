@@ -103,3 +103,20 @@ TEST_CASE("Processor/Editor End2End Test", "[Send ControllerChange on button pre
     CHECK( myMidiBuffer.getNumEvents() == 0);
 
 }
+
+TEST_CASE("Screenshot", "[Take a screenshot of the main window]")
+{
+    runWithinPluginEditor ([&] (ProgrammerProcessor& plugin) {
+        auto snapshot = plugin.getActiveEditor()->createComponentSnapshot (plugin.getActiveEditor()->getLocalBounds(), true, 1.0f);
+        
+        std::string myPath = "../screenshot.jpeg";
+        juce::File file (myPath);
+        //auto file = juce::File::getSpecialLocation (juce::File::SpecialLocationType::userDocumentsDirectory).getChildFile ("snapshot.jpeg");
+        file.deleteFile();
+        juce::FileOutputStream stream (file);
+        juce::JPEGImageFormat jpeg;
+        jpeg.writeImageToStream (snapshot, stream);
+
+        REQUIRE (file.existsAsFile());
+    });
+}

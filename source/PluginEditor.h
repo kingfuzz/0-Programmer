@@ -40,7 +40,7 @@ public:
     juce::Label portamentoLabel;
     juce::Label headerLabel;
     HorizontalSeparator headerSeparator;
-    bool enableInspector = true;
+    bool enableInspector = false;
 
     HorizontalSeparator footerSeparator;
     juce::Label footerHelpLabel1;
