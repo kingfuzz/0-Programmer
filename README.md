@@ -1,5 +1,7 @@
 # 0-Programmer
 
+![Screenshot](screenshot.jpeg "0-Programmer")
+
 0-Programmer is a simple application which allows you to edit the program pages of your Make Noise 0-Coast. The goal is to provide the functionality of the Make Noise Max4Live Page programmer, but in a standalone application. Simple as that :blush:
 
 We currently support MacOS and an experimental, untested, Linux version. If there's any interest, supporting iOS and Windows could be considered.
