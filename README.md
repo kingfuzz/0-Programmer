@@ -20,7 +20,7 @@ To use the app, do as follows:
 All feedback is welcome - please use the issue tracker! Before submitting a new issue, try to search existing issues/upcoming features and see if that resolves your problem.
 
 # Developer Info
-This section will describe the nitty-gritty of developing, testing and releasing the application.
+This section will describe the nitty-gritty of developing, testing and releasing the application. It's mostly for myself, because I forget stuff if I don't write it down. 
 
 ## Overall Structure
 The app follows the basic structure of a JUCE plugin, so there's two major domains: the _Editor_ (handling the GUI) and the _Processor_ (handling realtime audio). So why do we do this if we just want to send some simple control messages in a standalone app? Well, because we wan't to be able to release this as a plugin later on, so keeping this structure will make this step simpler. Also, it allows us to build some bits that may be usefull for other apps as well.
