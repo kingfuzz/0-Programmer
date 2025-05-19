@@ -18,7 +18,7 @@ But here's what we'll do first:
   * Make CI release unsigned builds **[DONE]**
   * Write ~~simple user guide~~ / or a help text in the UI? **[DONE]**
 * Update to latest Melatonin Inspector to remove a bunch of deprecation warnings. **[DONE]**
-* Initial (very limited) release
+* Initial (very limited) release _In Progress_
 
 After these initial steps, we'll start to plan additional features/bugs using Githubs issue tracker and stop committing straight to main. But we need to have a stable main branch with some actual functionality first ;-)
 
@@ -34,4 +34,7 @@ Stuff to add:
 Nice to have:
 * A python simulator to visualize received commands - would simplify testing.
 
+
 This project is built using the fantastic [PAMPLEJUCE](https://github.com/sudara/pamplejuce) template.
+Releases are handled as in pamplejuce. ie: [Managing Releases](https://melatonin.dev/manuals/pamplejuce/life-with-pamplejuce/managing-releases/)
+
