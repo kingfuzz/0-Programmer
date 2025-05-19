@@ -26,10 +26,19 @@ A quick note on controlling the 0-Coast. The application has no way of knowing t
 
 Stuff to add:
 * Initial User Guide
+  * Test to generate screenshot - see test_helpers.h
 * Document general architecture (Here it would be nice to add some developer docs, etc. also)
+  * Overall structure
+  * Test suite overview
+  * MidiView test and HW tests.
 * Proper GUI layout and graphics
+  * Automate/refactor a bunch of the GUI component code.
+  * Column layout
+  * Help text in column
 * Store parameter configuration as YAML
 * Add "Reset 0 Coast" Button
+* Redo integration test using test_helpers.h
+* Plugin version, Windows support, Linux support, etc..
 
 Nice to have:
 * A python simulator to visualize received commands - would simplify testing.
