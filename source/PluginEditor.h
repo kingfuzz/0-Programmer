@@ -39,10 +39,13 @@ public:
     juce::Slider portamentoSlider;
     juce::Label portamentoLabel;
     juce::Label headerLabel;
+    juce::Label headerLabel_2;
     HorizontalSeparator headerSeparator;
-    bool enableInspector = false;
+    HorizontalSeparator headerSeparator_2;
+    bool enableInspector = true;
 
     HorizontalSeparator footerSeparator;
+    HorizontalSeparator footerSeparator_2;
     juce::Label footerHelpLabel1;
     juce::Label footerHelpLabel2;
     
@@ -61,17 +64,21 @@ private:
     int inspectButtonHeight = 50;
 
     // UI Layout values
-    int headerHeight = 36;
-    int footerHeight = 36;
-    int contentItemHeight = 32;
-    int rightSidebarWidth = 50;
-    int leftSidebarWidth = 50;
-    int labelWidth = 75;
-    int spacerWidth = 10;
-    int numberOfContentItems = 6;
-    int numberOfSpacers = 2;
-    int numberOfColumns = 1;
-
+    const int columnWidth  = 400;
+    const int headerHeight = 36;
+    const int footerHeight = 36;
+    const int contentItemHeight = 32;
+    const int separatorHeight = contentItemHeight / 2;
+    const int rightSidebarWidth = 50;
+    const int leftSidebarWidth = 50;
+    const int contentWidth = columnWidth - leftSidebarWidth - rightSidebarWidth;
+    const int labelWidth = 75;
+    const int spacerWidth = 10;
+    static constexpr int numberOfContentItems = 6;
+    const int numberOfSpacers = 2;
+    const int numberOfColumns = 2;
+    std::array<juce::Rectangle<int>, numberOfContentItems> contentAreas;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProgrammerEditor)
     void timerCallback() override;
 
