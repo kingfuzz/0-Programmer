@@ -38,14 +38,14 @@ public:
     juce::ToggleButton buttonEnableLegato { "Enable Legato" };
     juce::Slider portamentoSlider;
     juce::Label portamentoLabel;
-    juce::Label headerLabel;
-    juce::Label headerLabel_2;
-    HorizontalSeparator headerSeparator;
-    HorizontalSeparator headerSeparator_2;
-    bool enableInspector = true;
+    //juce::Label headerLabel;
+    //juce::Label headerLabel_2;
+    //HorizontalSeparator headerSeparator;
+    //HorizontalSeparator headerSeparator_2;
+    bool enableInspector = false;
 
-    HorizontalSeparator footerSeparator;
-    HorizontalSeparator footerSeparator_2;
+    //HorizontalSeparator footerSeparator;
+    //HorizontalSeparator footerSeparator_2;
     juce::Label footerHelpLabel1;
     juce::Label footerHelpLabel2;
     
@@ -76,8 +76,12 @@ private:
     const int spacerWidth = 10;
     static constexpr int numberOfContentItems = 6;
     const int numberOfSpacers = 2;
-    const int numberOfColumns = 2;
+    static constexpr int numberOfColumns = 1;
     std::array<juce::Rectangle<int>, numberOfContentItems> contentAreas;
+
+    std::array<HorizontalSeparator, numberOfColumns> headerSeparator;
+    std::array<HorizontalSeparator, numberOfColumns> footerSeparator;
+    std::array<juce::Label, numberOfColumns> headerLabel;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProgrammerEditor)
     void timerCallback() override;

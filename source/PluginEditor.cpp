@@ -27,12 +27,12 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     };
 
     // Add header and footer
-    addAndMakeVisible(headerLabel);
-    headerLabel.setText ("Play Modes", juce::dontSendNotification);
-    headerLabel.setFont (juce::FontOptions (16.0f, juce::Font::bold));
-    headerLabel.setJustificationType (juce::Justification::bottomLeft);
-    addAndMakeVisible(headerSeparator);
-    addAndMakeVisible(footerSeparator);
+    addAndMakeVisible(headerLabel[0]);
+    headerLabel[0].setText ("Play Modes", juce::dontSendNotification);
+    headerLabel[0].setFont (juce::FontOptions (16.0f, juce::Font::bold));
+    headerLabel[0].setJustificationType (juce::Justification::bottomLeft);
+    addAndMakeVisible(headerSeparator[0]);
+    addAndMakeVisible(footerSeparator[0]);
     addAndMakeVisible(footerHelpLabel1);
     addAndMakeVisible(footerHelpLabel2);
     footerHelpLabel1.setText ("Press and hold PGM_A to go to Program Pages. Hold PGM_B to exit.", juce::dontSendNotification);
@@ -42,14 +42,17 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     footerHelpLabel1.setFont (juce::FontOptions (11.0f, juce::Font::plain));
     footerHelpLabel2.setFont (juce::FontOptions (11.0f, juce::Font::plain));
 
-    // TODO: Quick hack to test 
-    addAndMakeVisible(headerLabel_2);
-    headerLabel_2.setText ("Next Col", juce::dontSendNotification);
-    headerLabel_2.setFont (juce::FontOptions (16.0f, juce::Font::bold));
-    headerLabel_2.setJustificationType (juce::Justification::bottomLeft);
-    addAndMakeVisible(headerSeparator_2);
-    addAndMakeVisible(footerSeparator_2);
-
+    // Example of how to add a second column
+    if (numberOfColumns > 1)
+    {
+        addAndMakeVisible(headerLabel[1]);
+        headerLabel[1].setText ("Next Col", juce::dontSendNotification);
+        headerLabel[1].setFont (juce::FontOptions (16.0f, juce::Font::bold));
+        headerLabel[1].setJustificationType (juce::Justification::bottomLeft);
+        addAndMakeVisible(headerSeparator[1]);
+        addAndMakeVisible(footerSeparator[1]);    
+    }
+    
     // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
     params.addParameter (ENABLE_ARP_NAME, ENABLE_ARP_CC, ENABLE_ARP_VALUE, ENABLE_ARP_MIN_VALUE, ENABLE_ARP_MAX_VALUE);
@@ -131,13 +134,13 @@ void ProgrammerEditor::paint (juce::Graphics& g)
 
 
     // Draw the header    
-    headerLabel.setBounds( area.removeFromTop (headerHeight)) ;
-    headerSeparator.setBounds (area.removeFromTop (separatorHeight));
+    headerLabel[0].setBounds( area.removeFromTop (headerHeight)) ;
+    headerSeparator[0].setBounds (area.removeFromTop (separatorHeight));
         
     // Draw the footer - This will be a help text and a separator
     footerHelpLabel1.setBounds (area.removeFromBottom (contentItemHeight/2));
     footerHelpLabel2.setBounds (area.removeFromBottom (contentItemHeight/2));
-    footerSeparator.setBounds (area.removeFromBottom (separatorHeight));
+    footerSeparator[0].setBounds (area.removeFromBottom (separatorHeight));
     
     // Draw the content area - each of the content items bounding boxes are stored as an array.
     // This allows us to use this to position the content items of the next column.
@@ -174,17 +177,30 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     portamentoSlider.setBounds (sliderBounds);
 
 
-    // TODO: Quick hack to test col 2
+    // Example of how to add a second column
+    if (numberOfColumns > 1)
+    {
+        auto area2 = headerLabel[0].getBounds();
+        area2.setX (area2.getX() + contentWidth + rightSidebarWidth);
+        headerLabel[1].setBounds( area2 );
+        area2 = headerSeparator[0].getBounds();
+        area2.setX (area2.getX() + contentWidth + rightSidebarWidth);
+        headerSeparator[1].setBounds (area2);
+        area2 = footerSeparator[0].getBounds();
+        area2.setX (area2.getX() + contentWidth + rightSidebarWidth);
+        footerSeparator[1].setBounds (area2);   
+        
+        auto contentArea = contentAreas[0];
+        contentArea.setX (contentArea.getX() + contentWidth + rightSidebarWidth);
+        g.drawText ("Content 1", contentArea, juce::Justification::left, false);
+        contentArea = contentAreas[1];
+        contentArea.setX (contentArea.getX() + contentWidth + rightSidebarWidth);
+        g.drawText ("Content 2", contentArea, juce::Justification::left, false);
+        contentArea = contentAreas[2];
+        contentArea.setX (contentArea.getX() + contentWidth + rightSidebarWidth);
+        g.drawText ("Content 3", contentArea, juce::Justification::left, false);
+    }
     
-    auto area2 = headerLabel.getBounds();
-    area2.setX (area.getX() + contentWidth + rightSidebarWidth);
-    headerLabel_2.setBounds( area2 );
-    area2 = headerSeparator.getBounds();
-    area2.setX (area.getX() + contentWidth + rightSidebarWidth);
-    headerSeparator_2.setBounds (area2);
-    area2 = footerSeparator.getBounds();
-    area2.setX (area.getX() + contentWidth + rightSidebarWidth);
-    footerSeparator_2.setBounds (area2);
 
 }
 
