@@ -27,12 +27,12 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     };
 
     // Add header and footer
-    addAndMakeVisible(headerLabel);
-    headerLabel.setText ("Play Modes", juce::dontSendNotification);
-    headerLabel.setFont (juce::FontOptions (16.0f, juce::Font::bold));
-    headerLabel.setJustificationType (juce::Justification::bottomLeft);
-    addAndMakeVisible(headerSeparator);
-    addAndMakeVisible(footerSeparator);
+    addAndMakeVisible(headerLabel[0]);
+    headerLabel[0].setText ("Play Modes", juce::dontSendNotification);
+    headerLabel[0].setFont (juce::FontOptions (16.0f, juce::Font::bold));
+    headerLabel[0].setJustificationType (juce::Justification::bottomLeft);
+    addAndMakeVisible(headerSeparator[0]);
+    addAndMakeVisible(footerSeparator[0]);
     addAndMakeVisible(footerHelpLabel1);
     addAndMakeVisible(footerHelpLabel2);
     footerHelpLabel1.setText ("Press and hold PGM_A to go to Program Pages. Hold PGM_B to exit.", juce::dontSendNotification);
@@ -42,6 +42,17 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     footerHelpLabel1.setFont (juce::FontOptions (11.0f, juce::Font::plain));
     footerHelpLabel2.setFont (juce::FontOptions (11.0f, juce::Font::plain));
 
+    // Example of how to add a second column
+    if (numberOfColumns > 1)
+    {
+        addAndMakeVisible(headerLabel[1]);
+        headerLabel[1].setText ("Next Col", juce::dontSendNotification);
+        headerLabel[1].setFont (juce::FontOptions (16.0f, juce::Font::bold));
+        headerLabel[1].setJustificationType (juce::Justification::bottomLeft);
+        addAndMakeVisible(headerSeparator[1]);
+        addAndMakeVisible(footerSeparator[1]);    
+    }
+    
     // Add ARP ENABLE
     addAndMakeVisible (buttonEnableArp);
     params.addParameter (ENABLE_ARP_NAME, ENABLE_ARP_CC, ENABLE_ARP_VALUE, ENABLE_ARP_MIN_VALUE, ENABLE_ARP_MAX_VALUE);
@@ -69,7 +80,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     portamentoLabel.setText (PORTAMENTO_NAME, juce::dontSendNotification);
     
     // Calculate the size of the UI
-    auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*contentItemHeight/2;
+    auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*separatorHeight;
     if (enableInspector == true)
     {
         height += inspectButtonHeight + footerHeight;
@@ -78,8 +89,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     {
         height += headerHeight;
     }
-    // Set the size of the UI
-    auto width = 400 * numberOfColumns;
+    auto width = columnWidth + ((numberOfColumns-1) * (contentWidth + rightSidebarWidth));
     setSize (width, height);
 
     // Start timer - this is used to scan the UI for changes
@@ -94,15 +104,21 @@ ProgrammerEditor::~ProgrammerEditor()
 
 void ProgrammerEditor::paint (juce::Graphics& g)
 {
+    // NOTE: Move much of this to resized when adding support for resizing UI
+
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     g.setColour (juce::Colours::white);
     g.setFont (16.0f);
 
-    // Define spacers for UI
+    // Define area for UI
     auto area = getLocalBounds();
+
+    // Draw sidebar spacers
+    g.drawText ("", area.removeFromLeft (leftSidebarWidth), juce::Justification::centred, false);
+    g.drawText ("", area.removeFromRight (rightSidebarWidth + ((numberOfColumns-1)*(contentWidth+rightSidebarWidth))), juce::Justification::centred, false);
     
-    // NOTE: Move to resized when adding support for resizing UI
+
     // Draw the header and footer
     if (enableInspector == true)
     {
@@ -117,27 +133,26 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     }
 
 
-    // Draw sidebar spacers
-    g.drawText ("", area.removeFromLeft (leftSidebarWidth), juce::Justification::centred, false);
-    g.drawText ("", area.removeFromRight (rightSidebarWidth), juce::Justification::centred, false);
-
-
     // Draw the header    
-    headerLabel.setBounds( area.removeFromTop (headerHeight)) ;
-    headerSeparator.setBounds (area.removeFromTop (contentItemHeight/2));
-    //area.removeFromTop(headerHeight);
-
+    headerLabel[0].setBounds( area.removeFromTop (headerHeight)) ;
+    headerSeparator[0].setBounds (area.removeFromTop (separatorHeight));
         
     // Draw the footer - This will be a help text and a separator
     footerHelpLabel1.setBounds (area.removeFromBottom (contentItemHeight/2));
     footerHelpLabel2.setBounds (area.removeFromBottom (contentItemHeight/2));
-    footerSeparator.setBounds (area.removeFromBottom (contentItemHeight/2));
+    footerSeparator[0].setBounds (area.removeFromBottom (separatorHeight));
     
-    // Draw the content area
-    buttonEnableArp.setBounds (area.removeFromTop(contentItemHeight));
+    // Draw the content area - each of the content items bounding boxes are stored as an array.
+    // This allows us to use this to position the content items of the next column.
+    for (size_t i = 0; i < static_cast<size_t>(numberOfContentItems); ++i)
+    {
+        contentAreas[i] = area.removeFromTop (contentItemHeight);
+    }
+    
+    buttonEnableArp.setBounds (contentAreas[0]);
 
     // Doing the tricky label + comboBox positioning here
-    arpTypeLabel.setBounds (area.removeFromTop(contentItemHeight));
+    arpTypeLabel.setBounds (contentAreas[1]);
     auto arpTypeLabelBounds = arpTypeLabel.getBounds();
     auto arpTypeMenuBounds = arpTypeLabelBounds;
     arpTypeLabelBounds.setWidth(labelWidth);
@@ -148,11 +163,11 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     arpTypeMenu.setBounds (arpTypeMenuBounds.reduced(5));
     // NOTE: This is a bit of a hack - we should really use a custom component for the comboBox
     
-    buttonEnableLegato.setBounds (area.removeFromTop(contentItemHeight));
+    buttonEnableLegato.setBounds (contentAreas[2]);
     
     // The slider and label are a bit tricky to position - we should fix this
     // using a custom slider + label component
-    portamentoLabel.setBounds (area.removeFromTop(contentItemHeight));
+    portamentoLabel.setBounds (contentAreas[3]);
     auto labelBounds = portamentoLabel.getBounds();
     auto sliderBounds = labelBounds;
     labelBounds.setWidth(labelWidth);
@@ -161,6 +176,29 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     sliderBounds.setWidth (area.getWidth() - labelWidth - spacerWidth);
     portamentoSlider.setBounds (sliderBounds);
 
+    // Example of how to add a second column
+    if (numberOfColumns > 1)
+    {
+        auto area2 = headerLabel[0].getBounds();
+        area2.setX (area2.getX() + contentWidth + rightSidebarWidth);
+        headerLabel[1].setBounds( area2 );
+        area2 = headerSeparator[0].getBounds();
+        area2.setX (area2.getX() + contentWidth + rightSidebarWidth);
+        headerSeparator[1].setBounds (area2);
+        area2 = footerSeparator[0].getBounds();
+        area2.setX (area2.getX() + contentWidth + rightSidebarWidth);
+        footerSeparator[1].setBounds (area2);   
+        
+        auto contentArea = contentAreas[0];
+        contentArea.setX (contentArea.getX() + contentWidth + rightSidebarWidth);
+        g.drawText ("Content 1", contentArea, juce::Justification::left, false);
+        contentArea = contentAreas[1];
+        contentArea.setX (contentArea.getX() + contentWidth + rightSidebarWidth);
+        g.drawText ("Content 2", contentArea, juce::Justification::left, false);
+        contentArea = contentAreas[2];
+        contentArea.setX (contentArea.getX() + contentWidth + rightSidebarWidth);
+        g.drawText ("Content 3", contentArea, juce::Justification::left, false);
+    }
 
 }
 

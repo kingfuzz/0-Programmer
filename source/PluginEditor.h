@@ -31,24 +31,14 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    // UI Elements
-    juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
-    juce::Label arpTypeLabel;
-    juce::ComboBox arpTypeMenu;
-    juce::ToggleButton buttonEnableLegato { "Enable Legato" };
-    juce::Slider portamentoSlider;
-    juce::Label portamentoLabel;
-    juce::Label headerLabel;
-    HorizontalSeparator headerSeparator;
+    // Enable melatonin inspector here - will only be enabled in
+    // debug builds
     bool enableInspector = false;
-
-    HorizontalSeparator footerSeparator;
-    juce::Label footerHelpLabel1;
-    juce::Label footerHelpLabel2;
     
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test
     void testTimerCallback() { timerCallback(); }
+    juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -61,17 +51,35 @@ private:
     int inspectButtonHeight = 50;
 
     // UI Layout values
-    int headerHeight = 36;
-    int footerHeight = 36;
-    int contentItemHeight = 32;
-    int rightSidebarWidth = 50;
-    int leftSidebarWidth = 50;
-    int labelWidth = 75;
-    int spacerWidth = 10;
-    int numberOfContentItems = 6;
-    int numberOfSpacers = 2;
-    int numberOfColumns = 1;
+    const int columnWidth  = 400;
+    const int headerHeight = 36;
+    const int footerHeight = 36;
+    const int contentItemHeight = 32;
+    const int separatorHeight = contentItemHeight / 2;
+    const int rightSidebarWidth = 50;
+    const int leftSidebarWidth = 50;
+    const int contentWidth = columnWidth - leftSidebarWidth - rightSidebarWidth;
+    const int labelWidth = 75;
+    const int spacerWidth = 10;
+    static constexpr int numberOfContentItems = 6;
+    const int numberOfSpacers = 2;
+    static constexpr int numberOfColumns = 1;
+    std::array<juce::Rectangle<int>, numberOfContentItems> contentAreas;
 
+    // UI Content Elements
+    juce::Label arpTypeLabel;
+    juce::ComboBox arpTypeMenu;
+    juce::ToggleButton buttonEnableLegato { "Enable Legato" };
+    juce::Slider portamentoSlider;
+    juce::Label portamentoLabel;
+
+    // Footer and Header Elements
+    juce::Label footerHelpLabel1;
+    juce::Label footerHelpLabel2;
+    std::array<HorizontalSeparator, numberOfColumns> headerSeparator;
+    std::array<HorizontalSeparator, numberOfColumns> footerSeparator;
+    std::array<juce::Label, numberOfColumns> headerLabel;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProgrammerEditor)
     void timerCallback() override;
 
