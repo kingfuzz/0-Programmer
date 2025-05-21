@@ -176,7 +176,6 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     sliderBounds.setWidth (area.getWidth() - labelWidth - spacerWidth);
     portamentoSlider.setBounds (sliderBounds);
 
-
     // Example of how to add a second column
     if (numberOfColumns > 1)
     {
@@ -200,7 +199,6 @@ void ProgrammerEditor::paint (juce::Graphics& g)
         contentArea.setX (contentArea.getX() + contentWidth + rightSidebarWidth);
         g.drawText ("Content 3", contentArea, juce::Justification::left, false);
     }
-    
 
 }
 

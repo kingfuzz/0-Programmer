@@ -31,27 +31,14 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    // UI Elements
-    juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
-    juce::Label arpTypeLabel;
-    juce::ComboBox arpTypeMenu;
-    juce::ToggleButton buttonEnableLegato { "Enable Legato" };
-    juce::Slider portamentoSlider;
-    juce::Label portamentoLabel;
-    //juce::Label headerLabel;
-    //juce::Label headerLabel_2;
-    //HorizontalSeparator headerSeparator;
-    //HorizontalSeparator headerSeparator_2;
+    // Enable melatonin inspector here - will only be enabled in
+    // debug builds
     bool enableInspector = false;
-
-    //HorizontalSeparator footerSeparator;
-    //HorizontalSeparator footerSeparator_2;
-    juce::Label footerHelpLabel1;
-    juce::Label footerHelpLabel2;
     
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test
     void testTimerCallback() { timerCallback(); }
+    juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -79,6 +66,16 @@ private:
     static constexpr int numberOfColumns = 1;
     std::array<juce::Rectangle<int>, numberOfContentItems> contentAreas;
 
+    // UI Content Elements
+    juce::Label arpTypeLabel;
+    juce::ComboBox arpTypeMenu;
+    juce::ToggleButton buttonEnableLegato { "Enable Legato" };
+    juce::Slider portamentoSlider;
+    juce::Label portamentoLabel;
+
+    // Footer and Header Elements
+    juce::Label footerHelpLabel1;
+    juce::Label footerHelpLabel2;
     std::array<HorizontalSeparator, numberOfColumns> headerSeparator;
     std::array<HorizontalSeparator, numberOfColumns> footerSeparator;
     std::array<juce::Label, numberOfColumns> headerLabel;
