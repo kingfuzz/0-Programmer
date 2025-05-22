@@ -18,6 +18,33 @@ public:
     }
 };
 
+/* Custom combo box, which allows for custom placement of label.
+    NOTE: WIP - Not tested
+    
+    setSelectedID in constructor?
+*/
+class CustomComboBox : public juce::ComboBox
+{
+public:
+    // Methods to override:
+    // - setText() to set label text
+
+    void addAndMakeVisible(Component* child, int zOrder=-1) override
+    {
+        addAndMakeVisible(customLabel);
+        //addAndMakeVisible(this) <-- defer to superclass
+    }
+    void paint (juce::Graphics& g) override
+    {
+        // Do the hacky placement of label and box here
+        
+    }
+
+private:
+    juce::Label customLabel;
+};
+
+/* Make a similar custom class for sliders*/
 
 //==============================================================================
 // Editor class
