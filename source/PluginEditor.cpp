@@ -66,6 +66,12 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     arpTypeMenu.setSelectedId (1);
     params.addParameter (ARP_TYPE_NAME, ARP_TYPE_CC, ARP_TYPE_VALUE, ARP_TYPE_MIN_VALUE, ARP_TYPE_MAX_VALUE);
 
+    addAndMakeVisible (testBox);
+    testBox.addItem ("Test", 1);
+    testBox.addItem ("Test2", 2);
+    testBox.setSelectedId (1);
+    testBox.setText ("Test");
+
     // Add LEGATO ENABLE
     addAndMakeVisible (buttonEnableLegato);
     params.addParameter (ENABLE_LEGATO_NAME, ENABLE_LEGATO_CC, ENABLE_LEGATO_VALUE, ENABLE_LEGATO_MIN_VALUE, ENABLE_LEGATO_MAX_VALUE);
@@ -78,6 +84,9 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (PORTAMENTO_NAME, PORTAMENTO_CC, PORTAMENTO_VALUE, PORTAMENTO_MIN_VALUE, PORTAMENTO_MAX_VALUE);
     addAndMakeVisible (portamentoLabel);
     portamentoLabel.setText (PORTAMENTO_NAME, juce::dontSendNotification);
+
+    addAndMakeVisible (testSlider);
+    testSlider.setText("Test Slider");
     
     // Calculate the size of the UI
     auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*separatorHeight;

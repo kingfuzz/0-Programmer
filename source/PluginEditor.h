@@ -18,30 +18,149 @@ public:
     }
 };
 
-/* Custom combo box, which allows for custom placement of label.
-    NOTE: WIP - Not tested
-    
-    setSelectedID in constructor?
-*/
-class CustomComboBox : public juce::ComboBox
+/* Custom combo box, which allows for custom placement of label. */
+class CustomComboBox : public juce::Component
 {
 public:
-    // Methods to override:
-    // - setText() to set label text
-
-    void addAndMakeVisible(Component* child, int zOrder=-1) override
+    CustomComboBox ()
+        : customLabel (),
+          customComboBox ()
     {
-        addAndMakeVisible(customLabel);
-        //addAndMakeVisible(this) <-- defer to superclass
+        addAndMakeVisible (customLabel);
+        addAndMakeVisible (customComboBox);
     }
+
+    void addItem (const juce::String& text, int itemId)
+    {
+        customComboBox.addItem (text, itemId);
+    }
+
+    void addItem (const juce::String& text, juce::var userData)
+    {
+        customComboBox.addItem (text, userData);
+    }
+
+    void setSelectedId (int id)
+    {
+        customComboBox.setSelectedId (id, juce::dontSendNotification);
+    }
+
+    int getSelectedId () const
+    {
+        return customComboBox.getSelectedId();
+    }
+
+    /* getValue aims to unify the combobox selected value
+     * with the value of the parameter. The parameter is 0-indexed,
+     * while the combobox is 1-indexed. So we subtract 1 from the
+     * selected id to get the value.
+     * 
+     * Furthermore, the syntax is aligned with getValue of slider  
+     * and other components, which is a bit more intuitive.
+     *
+     * @return int The selected value of the combobox, adjusted for 0-indexing.
+    */
+    int getValue() const
+    {
+        return customComboBox.getSelectedId()-1;
+    }
+
+    void setText(const juce::String &newText)
+    {
+        customLabel.setText (newText, juce::dontSendNotification);
+    }
+
+    void setLabelWidth (int newWidth)
+    {
+        labelWidth = newWidth;
+    }
+
+    void setSpacerWidth (int newWidth)
+    {
+        spacerWidth = newWidth;
+    }
+    
     void paint (juce::Graphics& g) override
     {
-        // Do the hacky placement of label and box here
-        
+        (void) g; // Suppress unused parameter warning
+        // Custom placement of label and combo box
+        customLabel.setBounds (getLocalBounds());
+        auto customLabelBounds = customLabel.getBounds();
+        auto customComboBoxBounds = customLabelBounds;
+        customLabelBounds.setWidth(labelWidth);
+        customLabel.setBounds (customLabelBounds);
+        customComboBoxBounds.setX (customLabelBounds.getX() + labelWidth + spacerWidth);
+        customComboBoxBounds.setWidth (getWidth() - labelWidth - spacerWidth);
+        customComboBox.setBounds (customComboBoxBounds);
+        customComboBox.setBounds (customComboBoxBounds.reduced(5));
     }
 
 private:
+    int labelWidth = 75;
+    int spacerWidth = 10;
     juce::Label customLabel;
+    juce::ComboBox customComboBox;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomComboBox)
+};
+
+/* Custom slider, which allows for custom placement of label. */
+class CustomSlider : public juce::Component
+{
+public:
+    CustomSlider ()
+        : customLabel (),
+          customSlider ()
+    {
+        addAndMakeVisible (customLabel);
+        addAndMakeVisible (customSlider);
+
+        customSlider.setRange (0, 127, 1);
+        customSlider.setPopupDisplayEnabled (true, false, this);
+        customSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    }
+
+    double getValue()
+    {
+        return customSlider.getValue();
+    }
+
+    void setText(const juce::String &newText)
+    {
+        customLabel.setText (newText, juce::dontSendNotification);
+    }
+
+    void setLabelWidth (int newWidth)
+    {
+        labelWidth = newWidth;
+    }
+
+    void setSpacerWidth (int newWidth)
+    {
+        spacerWidth = newWidth;
+    }
+    
+    void paint (juce::Graphics& g) override
+    {
+        (void) g; // Suppress unused parameter warning
+        // Custom placement of label and combo box
+        customLabel.setBounds (getLocalBounds());
+        auto customLabelBounds = customLabel.getBounds();
+        auto customSliderBounds = customLabelBounds;
+        customLabelBounds.setWidth(labelWidth);
+        customLabel.setBounds (customLabelBounds);
+        customSliderBounds.setX (customLabelBounds.getX() + labelWidth + spacerWidth);
+        customSliderBounds.setWidth (getWidth() - labelWidth - spacerWidth);
+        customSlider.setBounds (customSliderBounds);
+    }
+
+private:
+    int labelWidth = 75;
+    int spacerWidth = 10;
+    juce::Label customLabel;
+    juce::Slider customSlider;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomSlider)
 };
 
 /* Make a similar custom class for sliders*/
@@ -60,7 +179,7 @@ public:
 
     // Enable melatonin inspector here - will only be enabled in
     // debug builds
-    bool enableInspector = false;
+    bool enableInspector = true;
     
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test
@@ -99,6 +218,9 @@ private:
     juce::ToggleButton buttonEnableLegato { "Enable Legato" };
     juce::Slider portamentoSlider;
     juce::Label portamentoLabel;
+
+    CustomComboBox testBox;
+    CustomSlider testSlider;
 
     // Footer and Header Elements
     juce::Label footerHelpLabel1;
