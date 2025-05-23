@@ -18,7 +18,10 @@ public:
     }
 };
 
-/* Custom combo box, which allows for custom placement of label. */
+/* Custom combo box, which allows for custom placement of label. 
+ * Basically, we just wrap the juce::ComboBox and add a label to it,
+ * which is eassier to place than the default label of the combobox.
+ */
 class CustomComboBox : public juce::Component
 {
 public:
@@ -65,6 +68,11 @@ public:
         return customComboBox.getSelectedId()-1;
     }
 
+    void setValue (int value)
+    {
+        customComboBox.setSelectedId (value + 1, juce::dontSendNotification);
+    }
+    
     void setText(const juce::String &newText)
     {
         customLabel.setText (newText, juce::dontSendNotification);
@@ -104,7 +112,9 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomComboBox)
 };
 
-/* Custom slider, which allows for custom placement of label. */
+/* Custom slider, which allows for custom placement of label. 
+ * Same basic idea as the custom combobox, but with a slider. 
+ */
 class CustomSlider : public juce::Component
 {
 public:
@@ -163,7 +173,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomSlider)
 };
 
-/* Make a similar custom class for sliders*/
 
 //==============================================================================
 // Editor class
@@ -179,12 +188,12 @@ public:
 
     // Enable melatonin inspector here - will only be enabled in
     // debug builds
-    bool enableInspector = true;
+    bool enableInspector = false;
     
     // Test interface for callback - this is not nice, figure out how to 
     // get timer to fire in test
     void testTimerCallback() { timerCallback(); }
-    juce::ToggleButton buttonEnableArp { "Enable Arpeggiator" };
+    void testEnableArp() { arpEnable.setValue(1); }
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -205,22 +214,17 @@ private:
     const int rightSidebarWidth = 50;
     const int leftSidebarWidth = 50;
     const int contentWidth = columnWidth - leftSidebarWidth - rightSidebarWidth;
-    const int labelWidth = 75;
-    const int spacerWidth = 10;
+    const int labelWidth = 100;
     static constexpr int numberOfContentItems = 6;
     const int numberOfSpacers = 2;
     static constexpr int numberOfColumns = 1;
     std::array<juce::Rectangle<int>, numberOfContentItems> contentAreas;
 
     // UI Content Elements
-    juce::Label arpTypeLabel;
-    juce::ComboBox arpTypeMenu;
-    juce::ToggleButton buttonEnableLegato { "Enable Legato" };
-    juce::Slider portamentoSlider;
-    juce::Label portamentoLabel;
-
-    CustomComboBox testBox;
-    CustomSlider testSlider;
+    CustomComboBox arpEnable;
+    CustomComboBox arpTypeMenu;
+    CustomComboBox legatoEnable;
+    CustomSlider portamentoSlider;
 
     // Footer and Header Elements
     juce::Label footerHelpLabel1;

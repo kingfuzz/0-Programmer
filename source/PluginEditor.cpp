@@ -53,40 +53,39 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
         addAndMakeVisible(footerSeparator[1]);    
     }
     
+
     // Add ARP ENABLE
-    addAndMakeVisible (buttonEnableArp);
+    addAndMakeVisible (arpEnable);
+    arpEnable.setText ("Arpegiator");
+    arpEnable.addItem ("Off", 1);
+    arpEnable.addItem ("On", 2);
+    arpEnable.setSelectedId (1);
+    arpEnable.setLabelWidth (labelWidth);
     params.addParameter (ENABLE_ARP_NAME, ENABLE_ARP_CC, ENABLE_ARP_VALUE, ENABLE_ARP_MIN_VALUE, ENABLE_ARP_MAX_VALUE);
 
     // Add ARP TYPE
-    addAndMakeVisible (arpTypeLabel);
-    arpTypeLabel.setText ("Arp Mode", juce::dontSendNotification);
     addAndMakeVisible (arpTypeMenu);
+    arpTypeMenu.setText ("Arp Mode");
     arpTypeMenu.addItem ("Normal", 1);
     arpTypeMenu.addItem ("Latch", 2);
     arpTypeMenu.setSelectedId (1);
+    arpTypeMenu.setLabelWidth (labelWidth);
     params.addParameter (ARP_TYPE_NAME, ARP_TYPE_CC, ARP_TYPE_VALUE, ARP_TYPE_MIN_VALUE, ARP_TYPE_MAX_VALUE);
 
-    addAndMakeVisible (testBox);
-    testBox.addItem ("Test", 1);
-    testBox.addItem ("Test2", 2);
-    testBox.setSelectedId (1);
-    testBox.setText ("Test");
-
     // Add LEGATO ENABLE
-    addAndMakeVisible (buttonEnableLegato);
+    addAndMakeVisible (legatoEnable);
+    legatoEnable.setText ("Legato");
+    legatoEnable.addItem ("Off", 1);
+    legatoEnable.addItem ("On", 2);
+    legatoEnable.setSelectedId (1);
+    legatoEnable.setLabelWidth (labelWidth);
     params.addParameter (ENABLE_LEGATO_NAME, ENABLE_LEGATO_CC, ENABLE_LEGATO_VALUE, ENABLE_LEGATO_MIN_VALUE, ENABLE_LEGATO_MAX_VALUE);
 
     // Add PORTAMENTO SLIDER
     addAndMakeVisible (portamentoSlider);
-    portamentoSlider.setRange (0, 127, 1);
-    portamentoSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-    portamentoSlider.setPopupDisplayEnabled (true, false, this);
+    portamentoSlider.setText (PORTAMENTO_NAME);
+    portamentoSlider.setLabelWidth (labelWidth);
     params.addParameter (PORTAMENTO_NAME, PORTAMENTO_CC, PORTAMENTO_VALUE, PORTAMENTO_MIN_VALUE, PORTAMENTO_MAX_VALUE);
-    addAndMakeVisible (portamentoLabel);
-    portamentoLabel.setText (PORTAMENTO_NAME, juce::dontSendNotification);
-
-    addAndMakeVisible (testSlider);
-    testSlider.setText("Test Slider");
     
     // Calculate the size of the UI
     auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*separatorHeight;
@@ -123,6 +122,12 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     // Define area for UI
     auto area = getLocalBounds();
 
+    if (enableInspector == true)
+    {
+        auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
+        g.drawText (helloWorld, area.removeFromBottom (footerHeight), juce::Justification::centred, false);
+    }
+
     // Draw sidebar spacers
     g.drawText ("", area.removeFromLeft (leftSidebarWidth), juce::Justification::centred, false);
     g.drawText ("", area.removeFromRight (rightSidebarWidth + ((numberOfColumns-1)*(contentWidth+rightSidebarWidth))), juce::Justification::centred, false);
@@ -130,9 +135,7 @@ void ProgrammerEditor::paint (juce::Graphics& g)
 
     // Draw the header and footer
     if (enableInspector == true)
-    {
-        auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
-        g.drawText (helloWorld, area.removeFromBottom (footerHeight), juce::Justification::centred, false);
+    {      
         // Draw inspector-button
         inspectButton.setBounds (area.removeFromBottom(inspectButtonHeight));
     }
@@ -158,32 +161,10 @@ void ProgrammerEditor::paint (juce::Graphics& g)
         contentAreas[i] = area.removeFromTop (contentItemHeight);
     }
     
-    buttonEnableArp.setBounds (contentAreas[0]);
-
-    // Doing the tricky label + comboBox positioning here
-    arpTypeLabel.setBounds (contentAreas[1]);
-    auto arpTypeLabelBounds = arpTypeLabel.getBounds();
-    auto arpTypeMenuBounds = arpTypeLabelBounds;
-    arpTypeLabelBounds.setWidth(labelWidth);
-    arpTypeLabel.setBounds (arpTypeLabelBounds);
-    arpTypeMenuBounds.setX (arpTypeLabelBounds.getX() + labelWidth + spacerWidth);
-    arpTypeMenuBounds.setWidth (area.getWidth() - labelWidth - spacerWidth);
-    arpTypeMenu.setBounds (arpTypeMenuBounds);
-    arpTypeMenu.setBounds (arpTypeMenuBounds.reduced(5));
-    // NOTE: This is a bit of a hack - we should really use a custom component for the comboBox
-    
-    buttonEnableLegato.setBounds (contentAreas[2]);
-    
-    // The slider and label are a bit tricky to position - we should fix this
-    // using a custom slider + label component
-    portamentoLabel.setBounds (contentAreas[3]);
-    auto labelBounds = portamentoLabel.getBounds();
-    auto sliderBounds = labelBounds;
-    labelBounds.setWidth(labelWidth);
-    portamentoLabel.setBounds (labelBounds);
-    sliderBounds.setX (labelBounds.getX() + labelWidth + spacerWidth);
-    sliderBounds.setWidth (area.getWidth() - labelWidth - spacerWidth);
-    portamentoSlider.setBounds (sliderBounds);
+    arpEnable.setBounds (contentAreas[0]);
+    arpTypeMenu.setBounds (contentAreas[1]);
+    legatoEnable.setBounds (contentAreas[2]);
+    portamentoSlider.setBounds (contentAreas[3]);
 
     // Example of how to add a second column
     if (numberOfColumns > 1)
@@ -219,9 +200,9 @@ void ProgrammerEditor::resized()
 void ProgrammerEditor::timerCallback()
 {
     // Update the parameter value based on the button states
-    params.setParameter (ENABLE_ARP_NAME, buttonEnableArp.getToggleState() ? 1 : 0);
-    params.setParameter (ARP_TYPE_NAME, arpTypeMenu.getSelectedId() - 1); // -1 because ComboBox is 1-indexed
-    params.setParameter (ENABLE_LEGATO_NAME, buttonEnableLegato.getToggleState() ? 1 : 0);
+    params.setParameter (ENABLE_ARP_NAME, arpEnable.getValue());
+    params.setParameter (ARP_TYPE_NAME, arpTypeMenu.getValue());
+    params.setParameter (ENABLE_LEGATO_NAME, legatoEnable.getValue());
     params.setParameter (PORTAMENTO_NAME, (int)portamentoSlider.getValue());
     
     // Iterate over parameters and check if they are updated
