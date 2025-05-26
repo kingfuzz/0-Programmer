@@ -218,7 +218,9 @@ private:
     static constexpr int numberOfContentItems = 6;
     const int numberOfSpacers = 2;
     static constexpr int numberOfColumns = 1;
-    std::array<juce::Rectangle<int>, numberOfContentItems> contentAreas;
+    // Bounding boxes for UI elements
+    std::array<std::array<juce::Rectangle<int>, numberOfContentItems>, numberOfColumns> contentAreas;
+    std::array<std::array<juce::Rectangle<int>, 5>, numberOfColumns> headerFooterAreas;
 
     // UI Content Elements
     CustomComboBox arpEnable;
@@ -227,8 +229,8 @@ private:
     CustomSlider portamentoSlider;
 
     // Footer and Header Elements
-    juce::Label footerHelpLabel1;
-    juce::Label footerHelpLabel2;
+    std::array<juce::Label, numberOfColumns> footerHelpLabel1;
+    std::array<juce::Label, numberOfColumns> footerHelpLabel2;
     std::array<HorizontalSeparator, numberOfColumns> headerSeparator;
     std::array<HorizontalSeparator, numberOfColumns> footerSeparator;
     std::array<juce::Label, numberOfColumns> headerLabel;
