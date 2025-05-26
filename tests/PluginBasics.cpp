@@ -65,7 +65,7 @@ TEST_CASE("Processor/Editor End2End Test", "[Send ControllerChange on button pre
   
     // -- Test 2 --
     // Simulate button press
-    testPluginEditor.buttonEnableArp.setToggleState (true, juce::NotificationType::dontSendNotification);
+    testPluginEditor.testEnableArp();
     // Wait a bit (1sec) so timer can trigger. NOTE: Doesn't work - Fire callback manually instead?
     //juce::Thread::sleep(2000);
     testPluginEditor.testTimerCallback();
