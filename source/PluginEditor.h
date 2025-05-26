@@ -149,6 +149,11 @@ public:
     {
         spacerWidth = newWidth;
     }
+
+    void setRange (double newMin, double newMax, double newInterval)
+    {
+        customSlider.setRange (newMin, newMax, newInterval);
+    }
     
     void paint (juce::Graphics& g) override
     {
@@ -217,7 +222,7 @@ private:
     const int labelWidth = 100;
     static constexpr int numberOfContentItems = 6;
     const int numberOfSpacers = 2;
-    static constexpr int numberOfColumns = 1;
+    static constexpr int numberOfColumns = 4;
     // Bounding boxes for UI elements
     std::array<std::array<juce::Rectangle<int>, numberOfContentItems>, numberOfColumns> contentAreas;
     std::array<std::array<juce::Rectangle<int>, 5>, numberOfColumns> headerFooterAreas;
@@ -227,6 +232,23 @@ private:
     CustomComboBox arpTypeMenu;
     CustomComboBox legatoEnable;
     CustomSlider portamentoSlider;
+
+    CustomComboBox midiClkEnable;
+    CustomSlider tempoInDiv;
+
+    CustomComboBox MidiAChannel;
+    CustomComboBox MidiACV;
+    CustomComboBox MidiAGate;
+    CustomSlider MidiAPitchScale;
+    CustomSlider MidiAAftertouchScale;
+    CustomSlider MidiAVelocityScale;
+
+    CustomComboBox MidiBChannel;
+    CustomComboBox MidiBCV;
+    CustomComboBox MidiBGate;
+    CustomSlider MidiBPitchScale;
+    CustomSlider MidiBAftertouchScale;
+    CustomSlider MidiBVelocityScale;
 
     // Footer and Header Elements
     std::array<juce::Label, numberOfColumns> footerHelpLabel1;
