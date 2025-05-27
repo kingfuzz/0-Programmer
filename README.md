@@ -1,10 +1,14 @@
 # 0-Programmer
+[![Build_and_Test](https://github.com/kingfuzz/0-Programmer/actions/workflows/build_and_test.yml/badge.svg?branch=main)](https://github.com/kingfuzz/0-Programmer/actions/workflows/build_and_test.yml)
+
 
 ![Screenshot](screenshot.jpeg "0-Programmer")
 
 0-Programmer is a simple application which allows you to edit the program pages of your Make Noise 0-Coast. The goal is to provide the functionality of the Make Noise Max4Live Page programmer, but in a standalone application. Simple as that :blush:
 
 We currently support MacOS and an experimental, untested, Linux version. If there's any interest, supporting iOS and Windows could be considered. A plugin version could be interesting as well. 
+
+_**Note: I am not affiliated with Make Noise in any way - I'm just a random guy who likes synths and noises**_
 
 ## Usage
 Find and download the app in the *Releases* section to the right :arrow_right: :arrow_right: :arrow_right:
@@ -59,5 +63,4 @@ PR's are welcome - fire away :blush: But, I may take some time reviewing any PR,
 
 # Acknowledgements
 This project is built using the fantastic [PAMPLEJUCE](https://github.com/sudara/pamplejuce) template - AKA the 1000hr head start for JUCE.
-
 
