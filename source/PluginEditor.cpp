@@ -27,7 +27,8 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     };
 
     // Calculate the size of the UI
-    auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*separatorHeight;
+    // Height is header + content items + spacers + help text (1xcontent) + footer
+    auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*separatorHeight + contentItemHeight;;
     if (enableInspector == true)
     {
         height += inspectButtonHeight + footerHeight;
@@ -63,9 +64,12 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     
     // Add header and footer text
     headerLabel[0].setText ("Play Modes", juce::dontSendNotification);
-    footerHelpLabel1[0].setText ("Press and hold PGM_A to go to Program Pages. Hold PGM_B to exit.", juce::dontSendNotification);
+    footerHelpLabel1[0].setText ("Press and hold PGM_A to enter Program Pages. Hold PGM_B to exit.", juce::dontSendNotification);
     footerHelpLabel2[0].setText ("Ensure MIDI Output is set to interface connected to 0-Coast", juce::dontSendNotification);
-    
+    headerLabel[1].setText ("Clocks", juce::dontSendNotification);
+    headerLabel[2].setText ("MIDI A", juce::dontSendNotification);
+    headerLabel[3].setText ("MIDI B", juce::dontSendNotification);
+
     // -- Add column 0 content items --
     // Add ARP ENABLE
     addAndMakeVisible (arpEnable);
@@ -100,6 +104,124 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     portamentoSlider.setLabelWidth (labelWidth);
     params.addParameter (PORTAMENTO_NAME, PORTAMENTO_CC, PORTAMENTO_VALUE, PORTAMENTO_MIN_VALUE, PORTAMENTO_MAX_VALUE);
 
+    // -- Add column 1 content items --
+    // Add MIDI Clock Enable
+    addAndMakeVisible (midiClkEnable);
+    midiClkEnable.setText ("MIDI Clock");
+    midiClkEnable.addItem ("Off", 1);
+    midiClkEnable.addItem ("On", 2);
+    midiClkEnable.setSelectedId (1);
+    midiClkEnable.setLabelWidth (labelWidth);
+    params.addParameter (ENABLE_MIDI_CLK_NAME, ENABLE_MIDI_CLK_CC, ENABLE_MIDI_CLK_VALUE, ENABLE_MIDI_CLK_MIN_VALUE, ENABLE_MIDI_CLK_MAX_VALUE);
+
+    // Add Tempo in Divisions
+    addAndMakeVisible (tempoInDiv);
+    tempoInDiv.setText ("Tempo In Div");
+    tempoInDiv.setRange (TEMPO_IN_DIV_MIN_VALUE, TEMPO_IN_DIV_MAX_VALUE, 1);
+    tempoInDiv.setLabelWidth (labelWidth);
+    params.addParameter (TEMPO_IN_DIV_NAME, TEMPO_IN_DIV_CC, TEMPO_IN_DIV_VALUE, TEMPO_IN_DIV_MIN_VALUE, TEMPO_IN_DIV_MAX_VALUE);
+
+    // -- Add column 2 content items --
+    // Add MIDI A Channel
+    addAndMakeVisible (MidiAChannel);
+    MidiAChannel.setText ("Channel");
+    for (int i = 1; i <= 16; ++i)
+    {
+        MidiAChannel.addItem (juce::String (i), i);
+    }
+    MidiAChannel.addItem ("All", 17);
+    MidiAChannel.setSelectedId (1);
+    MidiAChannel.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_A_CHANNEL_NAME, MIDI_A_CHANNEL_CC, MIDI_A_CHANNEL_VALUE, MIDI_A_CHANNEL_MIN_VALUE, MIDI_A_CHANNEL_MAX_VALUE);
+    // Add MIDI A CV
+    addAndMakeVisible (MidiACV);
+    MidiACV.setText ("CV");
+    MidiACV.addItem ("Note", 1);
+    MidiACV.addItem ("Velocity", 2);
+    MidiACV.addItem ("Mod Wheel", 3);
+    MidiACV.addItem ("LFO", 4);
+    MidiACV.setSelectedId (1);
+    MidiACV.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_A_CV_NAME, MIDI_A_CV_CC, MIDI_A_CV_VALUE, MIDI_A_CV_MIN_VALUE, MIDI_A_CV_MAX_VALUE);
+    // Add MIDI A Gate
+    addAndMakeVisible (MidiAGate);
+    MidiAGate.setText ("Gate");
+    MidiAGate.addItem ("Note", 1);
+    MidiAGate.addItem ("Velocity", 2);
+    MidiAGate.addItem ("Mod Wheel", 3);
+    MidiAGate.addItem ("LFO", 4);
+    MidiAGate.setSelectedId (1);
+    MidiAGate.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_A_GATE_NAME, MIDI_A_GATE_CC, MIDI_A_GATE_VALUE, MIDI_A_GATE_MIN_VALUE, MIDI_A_GATE_MAX_VALUE);
+    // Add MIDI A Pitch Scale
+    addAndMakeVisible (MidiAPitchScale);
+    MidiAPitchScale.setText ("Pitchbend Scale");
+    MidiAPitchScale.setRange (MIDI_A_PITCH_MIN_VALUE, MIDI_A_PITCH_MAX_VALUE, 1);
+    MidiAPitchScale.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_A_PITCH_NAME, MIDI_A_PITCH_CC, MIDI_A_PITCH_VALUE, MIDI_A_PITCH_MIN_VALUE, MIDI_A_PITCH_MAX_VALUE);
+    // Add MIDI A Aftertouch Scale
+    addAndMakeVisible (MidiAAftertouchScale);
+    MidiAAftertouchScale.setText ("Aftertouch Scale");
+    MidiAAftertouchScale.setRange (MIDI_A_AFTERTOUCH_MIN_VALUE, MIDI_A_AFTERTOUCH_MAX_VALUE, 1);
+    MidiAAftertouchScale.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_A_AFTERTOUCH_NAME, MIDI_A_AFTERTOUCH_CC, MIDI_A_AFTERTOUCH_VALUE, MIDI_A_AFTERTOUCH_MIN_VALUE, MIDI_A_AFTERTOUCH_MAX_VALUE);
+    // Add MIDI A Velocity Scale
+    addAndMakeVisible (MidiAVelocityScale);
+    MidiAVelocityScale.setText ("Velocity Scale");
+    MidiAVelocityScale.setRange (MIDI_A_VELOCITY_MIN_VALUE, MIDI_A_VELOCITY_MAX_VALUE, 1);
+    MidiAVelocityScale.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_A_VELOCITY_NAME, MIDI_A_VELOCITY_CC, MIDI_A_VELOCITY_VALUE, MIDI_A_VELOCITY_MIN_VALUE, MIDI_A_VELOCITY_MAX_VALUE);
+
+    // -- Add column 3 content items --
+    // Add MIDI B Channel
+    addAndMakeVisible (MidiBChannel);
+    MidiBChannel.setText ("Channel");
+    for (int i = 1; i <= 16; ++i)
+    {
+        MidiBChannel.addItem (juce::String (i), i);
+    }
+    MidiBChannel.addItem ("All", 17);
+    MidiBChannel.setSelectedId (1);
+    MidiBChannel.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_B_CHANNEL_NAME, MIDI_B_CHANNEL_CC, MIDI_B_CHANNEL_VALUE, MIDI_B_CHANNEL_MIN_VALUE, MIDI_B_CHANNEL_MAX_VALUE);
+    // Add MIDI B CV
+    addAndMakeVisible (MidiBCV);
+    MidiBCV.setText ("CV");
+    MidiBCV.addItem ("Note", 1);
+    MidiBCV.addItem ("Velocity", 2);
+    MidiBCV.addItem ("Mod Wheel", 3);
+    MidiBCV.addItem ("LFO", 4);
+    MidiBCV.setSelectedId (1);
+    MidiBCV.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_B_CV_NAME, MIDI_B_CV_CC, MIDI_B_CV_VALUE, MIDI_B_CV_MIN_VALUE, MIDI_B_CV_MAX_VALUE);
+    // Add MIDI B Gate
+    addAndMakeVisible (MidiBGate);
+    MidiBGate.setText ("Gate");
+    MidiBGate.addItem ("Note", 1);
+    MidiBGate.addItem ("Velocity", 2);
+    MidiBGate.addItem ("Mod Wheel", 3);
+    MidiBGate.addItem ("LFO", 4);
+    MidiBGate.setSelectedId (1);
+    MidiBGate.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_B_GATE_NAME, MIDI_B_GATE_CC, MIDI_B_GATE_VALUE, MIDI_B_GATE_MIN_VALUE, MIDI_B_GATE_MAX_VALUE);
+    // Add MIDI B Pitch Scale
+    addAndMakeVisible (MidiBPitchScale);
+    MidiBPitchScale.setText ("Pitchbend Scale");
+    MidiBPitchScale.setRange (MIDI_B_PITCH_MIN_VALUE, MIDI_B_PITCH_MAX_VALUE, 1);
+    MidiBPitchScale.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_B_PITCH_NAME, MIDI_B_PITCH_CC, MIDI_B_PITCH_VALUE, MIDI_B_PITCH_MIN_VALUE, MIDI_B_PITCH_MAX_VALUE);
+    // Add MIDI B Aftertouch Scale
+    addAndMakeVisible (MidiBAftertouchScale);
+    MidiBAftertouchScale.setText ("Aftertouch Scale");
+    MidiBAftertouchScale.setRange (MIDI_B_AFTERTOUCH_MIN_VALUE, MIDI_B_AFTERTOUCH_MAX_VALUE, 1);
+    MidiBAftertouchScale.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_B_AFTERTOUCH_NAME, MIDI_B_AFTERTOUCH_CC, MIDI_B_AFTERTOUCH_VALUE, MIDI_B_AFTERTOUCH_MIN_VALUE, MIDI_B_AFTERTOUCH_MAX_VALUE);
+    // Add MIDI B Velocity Scale
+    addAndMakeVisible (MidiBVelocityScale);
+    MidiBVelocityScale.setText ("Velocity Scale");
+    MidiBVelocityScale.setRange (MIDI_B_VELOCITY_MIN_VALUE, MIDI_B_VELOCITY_MAX_VALUE, 1);
+    MidiBVelocityScale.setLabelWidth (labelWidth);
+    params.addParameter (MIDI_B_VELOCITY_NAME, MIDI_B_VELOCITY_CC, MIDI_B_VELOCITY_VALUE, MIDI_B_VELOCITY_MIN_VALUE, MIDI_B_VELOCITY_MAX_VALUE);
 }
 
 ProgrammerEditor::~ProgrammerEditor()
@@ -194,10 +316,30 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     legatoEnable.setBounds (contentAreas[0][2]);
     portamentoSlider.setBounds (contentAreas[0][3]);
 
+    // Draw content items for column 1
+    midiClkEnable.setBounds (contentAreas[1][0]);
+    tempoInDiv.setBounds (contentAreas[1][1]);
+
+    // Draw content items for column 2
+    MidiAChannel.setBounds (contentAreas[2][0]);
+    MidiACV.setBounds (contentAreas[2][1]);
+    MidiAGate.setBounds (contentAreas[2][2]);
+    MidiAPitchScale.setBounds (contentAreas[2][3]);
+    MidiAAftertouchScale.setBounds (contentAreas[2][4]);
+    MidiAVelocityScale.setBounds (contentAreas[2][5]);
+    
+    // Draw content items for column 3
+    MidiBChannel.setBounds (contentAreas[3][0]);
+    MidiBCV.setBounds (contentAreas[3][1]);
+    MidiBGate.setBounds (contentAreas[3][2]);
+    MidiBPitchScale.setBounds (contentAreas[3][3]);
+    MidiBAftertouchScale.setBounds (contentAreas[3][4]);
+    MidiBVelocityScale.setBounds (contentAreas[3][5]);
+
     // Example of how to add additional columns of content items
-    if (numberOfColumns > 1)
+    if (numberOfColumns > 4)
     {
-        for (size_t col = 1; col < static_cast<size_t>(numberOfColumns); ++col)
+        for (size_t col = 4; col < static_cast<size_t>(numberOfColumns); ++col)
         {
 
             g.drawText ("Content 1", contentAreas[col][0], juce::Justification::left, false);
@@ -220,6 +362,40 @@ void ProgrammerEditor::timerCallback()
     params.setParameter (ARP_TYPE_NAME, arpTypeMenu.getValue());
     params.setParameter (ENABLE_LEGATO_NAME, legatoEnable.getValue());
     params.setParameter (PORTAMENTO_NAME, (int)portamentoSlider.getValue());
+
+    params.setParameter (ENABLE_MIDI_CLK_NAME, midiClkEnable.getValue());
+    params.setParameter (TEMPO_IN_DIV_NAME, (int)tempoInDiv.getValue());
+
+    params.setParameter (MIDI_A_CHANNEL_NAME, MidiAChannel.getValue());
+    params.setParameter (MIDI_A_CV_NAME, MidiACV.getValue());
+    params.setParameter (MIDI_A_GATE_NAME, MidiAGate.getValue());
+    params.setParameter (MIDI_A_PITCH_NAME, (int)MidiAPitchScale.getValue());
+    params.setParameter (MIDI_A_AFTERTOUCH_NAME, (int)MidiAAftertouchScale.getValue());
+    params.setParameter (MIDI_A_VELOCITY_NAME, (int)MidiAVelocityScale.getValue());
+    
+    params.setParameter (MIDI_B_CHANNEL_NAME, MidiBChannel.getValue());
+    params.setParameter (MIDI_B_CV_NAME, MidiBCV.getValue());
+    params.setParameter (MIDI_B_GATE_NAME, MidiBGate.getValue());
+    params.setParameter (MIDI_B_PITCH_NAME, (int)MidiBPitchScale.getValue());
+    params.setParameter (MIDI_B_AFTERTOUCH_NAME, (int)MidiBAftertouchScale.getValue());
+    params.setParameter (MIDI_B_VELOCITY_NAME, (int)MidiBVelocityScale.getValue());
+    
+    params.setParameter (ENABLE_MIDI_CLK_NAME, midiClkEnable.getValue());
+    params.setParameter (TEMPO_IN_DIV_NAME, (int)tempoInDiv.getValue());
+
+    params.setParameter (MIDI_A_CHANNEL_NAME, MidiAChannel.getValue());
+    params.setParameter (MIDI_A_CV_NAME, MidiACV.getValue());
+    params.setParameter (MIDI_A_GATE_NAME, MidiAGate.getValue());
+    params.setParameter (MIDI_A_PITCH_NAME, (int)MidiAPitchScale.getValue());
+    params.setParameter (MIDI_A_AFTERTOUCH_NAME, (int)MidiAAftertouchScale.getValue());
+    params.setParameter (MIDI_A_VELOCITY_NAME, (int)MidiAVelocityScale.getValue());
+    
+    params.setParameter (MIDI_B_CHANNEL_NAME, MidiBChannel.getValue());
+    params.setParameter (MIDI_B_CV_NAME, MidiBCV.getValue());
+    params.setParameter (MIDI_B_GATE_NAME, MidiBGate.getValue());
+    params.setParameter (MIDI_B_PITCH_NAME, (int)MidiBPitchScale.getValue());
+    params.setParameter (MIDI_B_AFTERTOUCH_NAME, (int)MidiBAftertouchScale.getValue());
+    params.setParameter (MIDI_B_VELOCITY_NAME, (int)MidiBVelocityScale.getValue());
     
     // Iterate over parameters and check if they are updated
     auto allParams = params.getAllParameters();
