@@ -135,7 +135,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (MIDI_A_CHANNEL_NAME, MIDI_A_CHANNEL_CC, MIDI_A_CHANNEL_VALUE, MIDI_A_CHANNEL_MIN_VALUE, MIDI_A_CHANNEL_MAX_VALUE);
     // Add MIDI A CV
     addAndMakeVisible (MidiACV);
-    MidiACV.setText ("CV");
+    MidiACV.setText ("CV Source");
     MidiACV.addItem ("Note", 1);
     MidiACV.addItem ("Velocity", 2);
     MidiACV.addItem ("Mod Wheel", 3);
@@ -145,7 +145,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (MIDI_A_CV_NAME, MIDI_A_CV_CC, MIDI_A_CV_VALUE, MIDI_A_CV_MIN_VALUE, MIDI_A_CV_MAX_VALUE);
     // Add MIDI A Gate
     addAndMakeVisible (MidiAGate);
-    MidiAGate.setText ("Gate");
+    MidiAGate.setText ("Gate Source");
     MidiAGate.addItem ("Note", 1);
     MidiAGate.addItem ("Velocity", 2);
     MidiAGate.addItem ("Mod Wheel", 3);
@@ -155,19 +155,19 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (MIDI_A_GATE_NAME, MIDI_A_GATE_CC, MIDI_A_GATE_VALUE, MIDI_A_GATE_MIN_VALUE, MIDI_A_GATE_MAX_VALUE);
     // Add MIDI A Pitch Scale
     addAndMakeVisible (MidiAPitchScale);
-    MidiAPitchScale.setText ("Pitchbend Scale");
+    MidiAPitchScale.setText ("Pitch Bend Range");
     MidiAPitchScale.setRange (MIDI_A_PITCH_MIN_VALUE, MIDI_A_PITCH_MAX_VALUE, 1);
     MidiAPitchScale.setLabelWidth (labelWidth);
     params.addParameter (MIDI_A_PITCH_NAME, MIDI_A_PITCH_CC, MIDI_A_PITCH_VALUE, MIDI_A_PITCH_MIN_VALUE, MIDI_A_PITCH_MAX_VALUE);
     // Add MIDI A Aftertouch Scale
     addAndMakeVisible (MidiAAftertouchScale);
-    MidiAAftertouchScale.setText ("Aftertouch Scale");
+    MidiAAftertouchScale.setText ("Aftertouch Range");
     MidiAAftertouchScale.setRange (MIDI_A_AFTERTOUCH_MIN_VALUE, MIDI_A_AFTERTOUCH_MAX_VALUE, 1);
     MidiAAftertouchScale.setLabelWidth (labelWidth);
     params.addParameter (MIDI_A_AFTERTOUCH_NAME, MIDI_A_AFTERTOUCH_CC, MIDI_A_AFTERTOUCH_VALUE, MIDI_A_AFTERTOUCH_MIN_VALUE, MIDI_A_AFTERTOUCH_MAX_VALUE);
     // Add MIDI A Velocity Scale
     addAndMakeVisible (MidiAVelocityScale);
-    MidiAVelocityScale.setText ("Velocity Scale");
+    MidiAVelocityScale.setText ("Min Velocity");
     MidiAVelocityScale.setRange (MIDI_A_VELOCITY_MIN_VALUE, MIDI_A_VELOCITY_MAX_VALUE, 1);
     MidiAVelocityScale.setLabelWidth (labelWidth);
     params.addParameter (MIDI_A_VELOCITY_NAME, MIDI_A_VELOCITY_CC, MIDI_A_VELOCITY_VALUE, MIDI_A_VELOCITY_MIN_VALUE, MIDI_A_VELOCITY_MAX_VALUE);
@@ -186,7 +186,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (MIDI_B_CHANNEL_NAME, MIDI_B_CHANNEL_CC, MIDI_B_CHANNEL_VALUE, MIDI_B_CHANNEL_MIN_VALUE, MIDI_B_CHANNEL_MAX_VALUE);
     // Add MIDI B CV
     addAndMakeVisible (MidiBCV);
-    MidiBCV.setText ("CV");
+    MidiBCV.setText ("CV Source");
     MidiBCV.addItem ("Note", 1);
     MidiBCV.addItem ("Velocity", 2);
     MidiBCV.addItem ("Mod Wheel", 3);
@@ -196,7 +196,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (MIDI_B_CV_NAME, MIDI_B_CV_CC, MIDI_B_CV_VALUE, MIDI_B_CV_MIN_VALUE, MIDI_B_CV_MAX_VALUE);
     // Add MIDI B Gate
     addAndMakeVisible (MidiBGate);
-    MidiBGate.setText ("Gate");
+    MidiBGate.setText ("Gate Source");
     MidiBGate.addItem ("Note", 1);
     MidiBGate.addItem ("Velocity", 2);
     MidiBGate.addItem ("Mod Wheel", 3);
@@ -206,19 +206,19 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
     params.addParameter (MIDI_B_GATE_NAME, MIDI_B_GATE_CC, MIDI_B_GATE_VALUE, MIDI_B_GATE_MIN_VALUE, MIDI_B_GATE_MAX_VALUE);
     // Add MIDI B Pitch Scale
     addAndMakeVisible (MidiBPitchScale);
-    MidiBPitchScale.setText ("Pitchbend Scale");
+    MidiBPitchScale.setText ("Pitch Bend Range");
     MidiBPitchScale.setRange (MIDI_B_PITCH_MIN_VALUE, MIDI_B_PITCH_MAX_VALUE, 1);
     MidiBPitchScale.setLabelWidth (labelWidth);
     params.addParameter (MIDI_B_PITCH_NAME, MIDI_B_PITCH_CC, MIDI_B_PITCH_VALUE, MIDI_B_PITCH_MIN_VALUE, MIDI_B_PITCH_MAX_VALUE);
     // Add MIDI B Aftertouch Scale
     addAndMakeVisible (MidiBAftertouchScale);
-    MidiBAftertouchScale.setText ("Aftertouch Scale");
+    MidiBAftertouchScale.setText ("Aftertouch Range");
     MidiBAftertouchScale.setRange (MIDI_B_AFTERTOUCH_MIN_VALUE, MIDI_B_AFTERTOUCH_MAX_VALUE, 1);
     MidiBAftertouchScale.setLabelWidth (labelWidth);
     params.addParameter (MIDI_B_AFTERTOUCH_NAME, MIDI_B_AFTERTOUCH_CC, MIDI_B_AFTERTOUCH_VALUE, MIDI_B_AFTERTOUCH_MIN_VALUE, MIDI_B_AFTERTOUCH_MAX_VALUE);
     // Add MIDI B Velocity Scale
     addAndMakeVisible (MidiBVelocityScale);
-    MidiBVelocityScale.setText ("Velocity Scale");
+    MidiBVelocityScale.setText ("Min Velocity");
     MidiBVelocityScale.setRange (MIDI_B_VELOCITY_MIN_VALUE, MIDI_B_VELOCITY_MAX_VALUE, 1);
     MidiBVelocityScale.setLabelWidth (labelWidth);
     params.addParameter (MIDI_B_VELOCITY_NAME, MIDI_B_VELOCITY_CC, MIDI_B_VELOCITY_VALUE, MIDI_B_VELOCITY_MIN_VALUE, MIDI_B_VELOCITY_MAX_VALUE);
