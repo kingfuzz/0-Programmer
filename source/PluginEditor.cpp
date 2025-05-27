@@ -380,6 +380,23 @@ void ProgrammerEditor::timerCallback()
     params.setParameter (MIDI_B_AFTERTOUCH_NAME, (int)MidiBAftertouchScale.getValue());
     params.setParameter (MIDI_B_VELOCITY_NAME, (int)MidiBVelocityScale.getValue());
     
+    params.setParameter (ENABLE_MIDI_CLK_NAME, midiClkEnable.getValue());
+    params.setParameter (TEMPO_IN_DIV_NAME, (int)tempoInDiv.getValue());
+
+    params.setParameter (MIDI_A_CHANNEL_NAME, MidiAChannel.getValue());
+    params.setParameter (MIDI_A_CV_NAME, MidiACV.getValue());
+    params.setParameter (MIDI_A_GATE_NAME, MidiAGate.getValue());
+    params.setParameter (MIDI_A_PITCH_NAME, (int)MidiAPitchScale.getValue());
+    params.setParameter (MIDI_A_AFTERTOUCH_NAME, (int)MidiAAftertouchScale.getValue());
+    params.setParameter (MIDI_A_VELOCITY_NAME, (int)MidiAVelocityScale.getValue());
+    
+    params.setParameter (MIDI_B_CHANNEL_NAME, MidiBChannel.getValue());
+    params.setParameter (MIDI_B_CV_NAME, MidiBCV.getValue());
+    params.setParameter (MIDI_B_GATE_NAME, MidiBGate.getValue());
+    params.setParameter (MIDI_B_PITCH_NAME, (int)MidiBPitchScale.getValue());
+    params.setParameter (MIDI_B_AFTERTOUCH_NAME, (int)MidiBAftertouchScale.getValue());
+    params.setParameter (MIDI_B_VELOCITY_NAME, (int)MidiBVelocityScale.getValue());
+    
     // Iterate over parameters and check if they are updated
     auto allParams = params.getAllParameters();
     for (const auto& param : allParams)
